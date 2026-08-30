@@ -328,7 +328,7 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
     startQrPoll(data.token);
 
   }catch(e){
-    showMsg('msgQr','تعذر الاتصال بالسيرفر.','err');
+    showMsg('msgQr', `تعذر الاتصال بالسيرفر: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
     btn.disabled = false; btn.textContent = 'توليد رمز QR';
   }
