@@ -290,9 +290,7 @@ document.getElementById('btnBiometric').addEventListener('click', async ()=>{
 });
 
 // ===== QR =====
-let qrCountdownTimer = null;
-
-// ===== QR =====
+let qrPollTimer = null;
 let qrCountdownTimer = null;
 
 document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
@@ -317,8 +315,18 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
     }
 
     document.getElementById('qrBox').style.display = 'block';
-    document.getElementById('qrTokenDisplay').textContent = data.token;
+    document.getElementById('qrTokenDisplay').innerHTML = '';
+
+    const confirmUrl = `https://tarekguelma013-lgtm.github.io/axon-login/axon-qr-confirm.html?token=${data.token}`;
+    QRCode.toCanvas(document.createElement('canvas'), confirmUrl, { width: 220 }, (err, canvas)=>{
+      if(!err){
+        document.getElementById('qrTokenDisplay').appendChild(canvas);
+      }
+    });
+
     startQrCountdown(data.expires_in_seconds);
+    startQrPoll(data.token);
+
   }catch(e){
     showMsg('msgQr','تعذر الاتصال بالسيرفر.','err');
   }finally{
@@ -326,21 +334,14 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
   }
 });
 
-function startQrCountdown(seconds){
-  clearInterval(qrCountdownTimer);
-  let remaining = seconds;
-  const timerEl = document.getElementById('qrTimer');
-  timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
-  qrCountdownTimer = setInterval(()=>{
-    remaining--;
-    if(remaining <= 0){
-      clearInterval(qrCountdownTimer);
-      timerEl.textContent = 'انتهت صلاحية الرمز';
-      return;
-    }
-    timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
-  }, 1000);
-}
+function startQrPoll(token){
+  clearInterval(qrPollTimer);
+  qrPollTimer = setInterval(async ()=>{
+    try{
+      const res = await fetch(fn('qr-login-manage'), {
+        method:'POST', headers: headers(),
+        body: JSON.stringify({ action:'poll', token })
+      });
 </script>
 </body>
 </html>
