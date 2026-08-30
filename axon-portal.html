@@ -335,13 +335,46 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
 });
 
 function startQrPoll(token){
-  clearInterval(qrPollTimer);
-  qrPollTimer = setInterval(async ()=>{
-    try{
-      const res = await fetch(fn('qr-login-manage'), {
-        method:'POST', headers: headers(),
-        body: JSON.stringify({ action:'poll', token })
-      });
-</script>
+      clearInterval(qrPollTimer);
+      qrPollTimer = setInterval(async ()=>{
+        try{
+          const res = await fetch(fn('qr-login-manage'), {
+            method:'POST', headers: headers(),
+            body: JSON.stringify({ action:'poll', token })
+          });
+          const data = await res.json();
+
+          if(data.confirmed){
+            clearInterval(qrPollTimer);
+            clearInterval(qrCountdownTimer);
+            showMsg('msgQr','تم تأكيد الدخول ✅','ok');
+            goToDashboard(data.user_id);
+            return;
+          }
+          if(data.expired){
+            clearInterval(qrPollTimer);
+            showMsg('msgQr','انتهت صلاحية الرمز، ولّد رمزًا جديدًا.','err');
+          }
+        }catch(e){ /* تجاهل أخطاء الفحص المؤقتة */ }
+      }, 2500);
+    }
+
+    function startQrCountdown(seconds){
+      clearInterval(qrCountdownTimer);
+      let remaining = seconds;
+      const timerEl = document.getElementById('qrTimer');
+      timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+      qrCountdownTimer = setInterval(()=>{
+        remaining--;
+        if(remaining <= 0){
+          clearInterval(qrCountdownTimer);
+          clearInterval(qrPollTimer);
+          timerEl.textContent = 'انتهت صلاحية الرمز';
+          return;
+        }
+        timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+      }, 1000);
+    }
+  </script>
 </body>
 </html>
