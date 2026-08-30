@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تأكيد الدخول - AXON</title>
+<style>
+  body {
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:#12141a; color:#eee; font-family:'Segoe UI', Tahoma, sans-serif; padding:20px; box-sizing:border-box;
+  }
+  .card {
+    background:#1a1d26; border-radius:16px; padding:32px 24px; max-width:420px; width:100%;
+    text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  }
+  .logo { font-size:2rem; font-weight:bold; margin-bottom:6px; }
+  .logo span { color:#d4a656; }
+  .sub { color:#999; margin-bottom:24px; font-size:0.95rem; }
+  .btn {
+    width:100%; padding:14px; border:none; border-radius:10px; font-size:1.05rem; font-weight:bold;
+    background:#d4a656; color:#1a1d26; cursor:pointer; margin-top:8px;
+  }
+  .btn:disabled { opacity:0.6; }
+  .msg { margin-top:16px; padding:12px; border-radius:8px; display:none; font-size:0.95rem; }
+  .msg.show { display:block; }
+  .msg.ok { background:rgba(80,200,120,0.15); color:#7ee0a0; }
+  .msg.err { background:rgba(220,80,80,0.15); color:#f0a0a0; }
+  .link { color:#d4a656; text-decoration:none; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">AX<span>ON</span></div>
+    <div class="sub" id="subText">تأكيد تسجيل الدخول من جهاز آخر</div>
+
+    <div id="notLoggedIn" style="display:none;">
+      <div class="msg show err">يجب تسجيل الدخول على هذا الجهاز أولًا لتتمكن من التأكيد.</div>
+      <a class="link" href="axon-portal.html">الذهاب لتسجيل الدخول</a>
+    </div>
+
+    <div id="confirmBox" style="display:none;">
+      <button class="btn" id="btnConfirm">تأكيد الدخول</button>
+    </div>
+
+    <div class="msg" id="msgResult"></div>
+  </div>
+
+<script>
+  const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
+  const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
+  const QR_MANAGE_SLUG = "super-action";
+
+  function headers(){
+    return {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${ANON_KEY}`,
+      "apikey": ANON_KEY
+    };
+  }
+  function showMsg(text, type){
+    const el = document.getElementById('msgResult');
+    el.textContent = text;
+    el.className = 'msg show ' + type;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const userId = sessionStorage.getItem('axon_user_id');
+
+  if(!token){
+    showMsg('رابط غير صالح: لا يوجد رمز.', 'err');
+  } else if(!userId){
+    document.getElementById('notLoggedIn').style.display = 'block';
+  } else {
+    document.getElementById('confirmBox').style.display = 'block';
+  }
+
+  document.getElementById('btnConfirm')?.addEventListener('click', async ()=>{
+    const btn = document.getElementById('btnConfirm');
+    btn.disabled = true; btn.textContent = 'جاري التأكيد...';
+    try{
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/${QR_MANAGE_SLUG}`, {
+        method:'POST', headers: headers(),
+        body: JSON.stringify({ action:'confirm', token, user_id: userId })
+      });
+      const data = await res.json();
+      if(data.success){
+        showMsg('تم تأكيد الدخول بنجاح ✅ يمكنك إغلاق هذه الصفحة الآن.', 'ok');
+        btn.style.display = 'none';
+      } else {
+        showMsg(data.error || 'فشل التأكيد.', 'err');
+        btn.disabled = false; btn.textContent = 'تأكيد الدخول';
+      }
+    }catch(e){
+      showMsg('تعذر الاتصال بالسيرفر.', 'err');
+      btn.disabled = false; btn.textContent = 'تأكيد الدخول';
+    }
+  });
+</script>
+</body>
+</html>
