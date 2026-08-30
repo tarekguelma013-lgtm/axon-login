@@ -155,8 +155,8 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
 const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
 
@@ -165,6 +165,7 @@ const REAL_SLUGS = {
   "login-biometric-options": "smart-endpoint",
   "login-biometric-verify": "rapid-api",
   "login-qr-generate": "swift-api",
+  "qr-login-manage": "super-action",
 };
 
 function fn(name){
@@ -287,6 +288,9 @@ document.getElementById('btnBiometric').addEventListener('click', async ()=>{
     btn.disabled = false; btn.textContent = 'التحقق بالبصمة الآن';
   }
 });
+
+// ===== QR =====
+let qrCountdownTimer = null;
 
 // ===== QR =====
 let qrCountdownTimer = null;
