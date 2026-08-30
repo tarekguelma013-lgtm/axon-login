@@ -280,7 +280,7 @@ document.getElementById('btnBiometric').addEventListener('click', async ()=>{
       goToDashboard(userId);
       return;
     }
-    showMsg('msgBiometric', verifyData.error || 'فشل التحقق من البصمة.', 'err');
+    showMsg('msgBiometric', (verifyData.error || 'فشل التحقق من البصمة.') + (verifyData.debug ? ` — تفاصيل: ${verifyData.debug}` : ''), 'err');
   }catch(e){
     showMsg('msgBiometric', `تعذّر بدء التحقق: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
