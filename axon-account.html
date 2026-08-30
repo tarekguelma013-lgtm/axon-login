@@ -88,6 +88,13 @@
   </div>
 
   <div class="card">
+    <h2>إضافة بصمة جديدة</h2>
+    <div class="sub">سجّل بصمة أو Face ID لهذا الجهاز باش تدخل بيها لاحقًا.</div>
+    <button id="btnRegisterBiometric" class="btn" style="width:100%; padding:11px; border-radius:9px; border:none; font-weight:600; font-family:inherit; font-size:0.88rem; cursor:pointer; background:linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#14171c;">تسجيل بصمة على هذا الجهاز</button>
+    <div class="msg" id="msgRegister"></div>
+  </div>
+
+  <div class="card">
     <h2>الأجهزة والبصمات المسجلة</h2>
     <div class="sub">الأجهزة المصرّح لها بالدخول ببصمتك.</div>
     <div id="devicesList">
@@ -97,12 +104,14 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
 <script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
 const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
 
-// اسم الدالة الجديدة كما نُشرت على Supabase (بدون تشفير اسم)
 const MANAGE_DEVICES_FN = "super-api";
+const REGISTER_OPTIONS_FN = "hyper-worker";
+const REGISTER_VERIFY_FN = "quick-handler";
 
 function fnUrl(name){ return `${SUPABASE_URL}/functions/v1/${name}`; }
 function headers(){
@@ -205,6 +214,58 @@ async function deleteDevice(credentialId){
 document.getElementById('btnLogout').addEventListener('click', ()=>{
   sessionStorage.removeItem('axon_user_id');
   window.location.href = "axon-portal.html";
+});
+
+// ===== تسجيل بصمة جديدة =====
+function showRegisterMsg(text, type){
+  const el = document.getElementById('msgRegister');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+
+document.getElementById('btnRegisterBiometric').addEventListener('click', async ()=>{
+  const btn = document.getElementById('btnRegisterBiometric');
+  btn.disabled = true; btn.textContent = 'جاري التسجيل...';
+
+  try{
+    if(!window.PublicKeyCredential){
+      showRegisterMsg('هذا الجهاز/المتصفح لا يدعم البصمة (WebAuthn).', 'err');
+      return;
+    }
+
+    const optRes = await fetch(fnUrl(REGISTER_OPTIONS_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ user_id: userId })
+    });
+    const options = await optRes.json();
+    if(options.error){
+      showRegisterMsg(options.error, 'err');
+      return;
+    }
+
+    const regResp = await SimpleWebAuthnBrowser.startRegistration(options);
+
+    const verifyRes = await fetch(fnUrl(REGISTER_VERIFY_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({
+        user_id: userId,
+        attestation_response: regResp,
+        device_label: navigator.userAgent.slice(0, 60)
+      })
+    });
+    const verifyData = await verifyRes.json();
+
+    if(verifyData.success){
+      showRegisterMsg('تم تسجيل البصمة بنجاح على هذا الجهاز.', 'ok');
+      loadDevices();
+    } else {
+      showRegisterMsg(verifyData.error || 'فشل تسجيل البصمة.', 'err');
+    }
+  }catch(e){
+    showRegisterMsg(`تعذّر التسجيل: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
+  }finally{
+    btn.disabled = false; btn.textContent = 'تسجيل بصمة على هذا الجهاز';
+  }
 });
 
 loadDevices();
