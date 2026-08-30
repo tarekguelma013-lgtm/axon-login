@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXON — بوابة الدخول</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#14171c; --ink-2:#1b1f26; --ink-3:#232833;
@@ -65,7 +65,7 @@
   .panel{ display:none; }
   .panel.active{ display:block; }
 
-  .qr-box{ text-align:center; background:var(--ink); border:1px dashed var(--ink-3); border-radius:10px; padding:20px; margin-bottom:12px; }
+  .qr-box{ text-align:center; background:var(--ink); border:1px dashed var(--ink-3); border-radius:10px; padding:20px; }
   .qr-token{ font-family:monospace; font-size:0.95rem; letter-spacing:2px; margin:8px 0; word-break:break-all; }
   .qr-timer{ font-size:0.75rem; color:var(--slate); }
 
@@ -147,16 +147,16 @@
     <div class="panel success" id="panelSuccess">
       <div class="icon">✓</div>
       <div class="step-title">تم التحقق من هويتك</div>
-      <div class="step-sub">مرحبًا بعودتك إلى AXON.</div>
+      <div class="step-sub">مرحبا بعودتك إلى AXON.</div>
     </div>
 
   </div>
-
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
 const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
 
@@ -335,46 +335,46 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
 });
 
 function startQrPoll(token){
-      clearInterval(qrPollTimer);
-      qrPollTimer = setInterval(async ()=>{
-        try{
-          const res = await fetch(fn('qr-login-manage'), {
-            method:'POST', headers: headers(),
-            body: JSON.stringify({ action:'poll', token })
-          });
-          const data = await res.json();
+  clearInterval(qrPollTimer);
+  qrPollTimer = setInterval(async ()=>{
+    try{
+      const res = await fetch(fn('qr-login-manage'), {
+        method:'POST', headers: headers(),
+        body: JSON.stringify({ action:'poll', token })
+      });
+      const data = await res.json();
 
-          if(data.confirmed){
-            clearInterval(qrPollTimer);
-            clearInterval(qrCountdownTimer);
-            showMsg('msgQr','تم تأكيد الدخول ✅','ok');
-            goToDashboard(data.user_id);
-            return;
-          }
-          if(data.expired){
-            clearInterval(qrPollTimer);
-            showMsg('msgQr','انتهت صلاحية الرمز، ولّد رمزًا جديدًا.','err');
-          }
-        }catch(e){ /* تجاهل أخطاء الفحص المؤقتة */ }
-      }, 2500);
-    }
+      if(data.confirmed){
+        clearInterval(qrPollTimer);
+        clearInterval(qrCountdownTimer);
+        showMsg('msgQr','تم تأكيد الدخول ✅','ok');
+        goToDashboard(data.user_id);
+        return;
+      }
+      if(data.expired){
+        clearInterval(qrPollTimer);
+        showMsg('msgQr','انتهت صلاحية الرمز، ولّد رمزًا جديدًا.','err');
+      }
+    }catch(e){ /* تجاهل أخطاء الفحص المؤقتة */ }
+  }, 2500);
+}
 
-    function startQrCountdown(seconds){
+function startQrCountdown(seconds){
+  clearInterval(qrCountdownTimer);
+  let remaining = seconds;
+  const timerEl = document.getElementById('qrTimer');
+  timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+  qrCountdownTimer = setInterval(()=>{
+    remaining--;
+    if(remaining <= 0){
       clearInterval(qrCountdownTimer);
-      let remaining = seconds;
-      const timerEl = document.getElementById('qrTimer');
-      timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
-      qrCountdownTimer = setInterval(()=>{
-        remaining--;
-        if(remaining <= 0){
-          clearInterval(qrCountdownTimer);
-          clearInterval(qrPollTimer);
-          timerEl.textContent = 'انتهت صلاحية الرمز';
-          return;
-        }
-        timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
-      }, 1000);
+      clearInterval(qrPollTimer);
+      timerEl.textContent = 'انتهت صلاحية الرمز';
+      return;
     }
-  </script>
+    timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+  }, 1000);
+}
+</script>
 </body>
 </html>
