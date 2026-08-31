@@ -155,7 +155,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
 const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
@@ -315,13 +315,16 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
     }
 
     document.getElementById('qrBox').style.display = 'block';
-    document.getElementById('qrTokenDisplay').innerHTML = '';
+    const qrHolder = document.getElementById('qrTokenDisplay');
+    qrHolder.innerHTML = '';
 
     const confirmUrl = `https://tarekguelma013-lgtm.github.io/axon-login/axon-qr-confirm.html?token=${data.token}`;
-    QRCode.toCanvas(document.createElement('canvas'), confirmUrl, { width: 220 }, (err, canvas)=>{
-      if(!err){
-        document.getElementById('qrTokenDisplay').appendChild(canvas);
-      }
+    new QRCode(qrHolder, {
+      text: confirmUrl,
+      width: 220,
+      height: 220,
+      colorDark: "#14171c",
+      colorLight: "#ece7dc"
     });
 
     startQrCountdown(data.expires_in_seconds);
