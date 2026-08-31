@@ -249,7 +249,7 @@ if(data.suggest_next_method === 'biometric'){
 const attemptsMsg = (typeof data.attempts_left === 'number')
   ? ` (باقي ${data.attempts_left} محاولة)`
   : '';
-showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg, 'err');
+showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg + ' | DEBUG: ' + JSON.stringify(data), 'err');
   }catch(e){
     showMsg('msgPassword','تعذر الاتصال بالسيرفر.','err');
   }finally{
