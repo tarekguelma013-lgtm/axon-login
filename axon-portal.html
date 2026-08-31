@@ -231,10 +231,25 @@ document.getElementById('btnPassword').addEventListener('click', async ()=>{
       return;
     }
     if(data.locked){
-      showMsg('msgPassword', data.error, 'err');
-      return;
-    }
-    showMsg('msgPassword', data.error || 'كلمة السر غير صحيحة.', 'err');
+  showMsg('msgPassword', data.error, 'err');
+  return;
+}
+
+if(data.suggest_next_method === 'biometric'){
+  showMsg('msgPassword', 'تم تجاوز عدد المحاولات المسموح، جاري التحويل لتسجيل الدخول بالبصمة...', 'err');
+  document.getElementById('bioEmail').value = email;
+  setTimeout(()=>{
+    document.querySelectorAll('.tab').forEach(t=> t.className = 'tab');
+    document.querySelector('.tab[data-tab="biometric"]').className = 'tab active';
+    showPanel('panelBiometric');
+  }, 1400);
+  return;
+}
+
+const attemptsMsg = (typeof data.attempts_left === 'number')
+  ? ` (باقي ${data.attempts_left} محاولة)`
+  : '';
+showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg, 'err');
   }catch(e){
     showMsg('msgPassword','تعذر الاتصال بالسيرفر.','err');
   }finally{
