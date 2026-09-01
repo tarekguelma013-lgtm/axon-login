@@ -198,8 +198,8 @@ async function doConfirm(userId){
       showPanel('panelSuccess');
       return;
     }
-    showMsg('msgConfirm', data.error || 'تعذر تأكيد الرمز.', 'err');
-    showMsg('msgLogin', data.error || 'تعذر تأكيد الرمز.', 'err');
+   showMsg('msgConfirm', (data.error || 'تعذر تأكيد الرمز.') + ' | DEBUG: ' + JSON.stringify(data), 'err');
+showMsg('msgLogin', (data.error || 'تعذر تأكيد الرمز.') + ' | DEBUG: ' + JSON.stringify(data), 'err'); 
   }catch(e){
     showMsg('msgConfirm', 'تعذر الاتصال بالسيرفر.', 'err');
     showMsg('msgLogin', 'تعذر الاتصال بالسيرفر.', 'err');
