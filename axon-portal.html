@@ -335,12 +335,13 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
 
     const confirmUrl = `https://tarekguelma013-lgtm.github.io/axon-login/axon-qr-confirm.html?token=${data.token}`;
     new QRCode(qrHolder, {
-      text: confirmUrl,
-      width: 220,
-      height: 220,
-      colorDark: "#14171c",
-      colorLight: "#ece7dc"
-    });
+  text: confirmUrl,
+  width: 300,
+  height: 300,
+  colorDark: "#14171c",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.L
+});
     
     startQrCountdown(data.expires_in_seconds);
     startQrPoll(data.token);
