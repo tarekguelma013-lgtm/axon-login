@@ -340,7 +340,8 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
       height: 220,
       colorDark: "#14171c",
       colorLight: "#ece7dc"
-    });
+ qrHolder.insertAdjacentHTML('afterend', '<p style="word-break: break-all; color: white;">' + confirmUrl + '</p>');
+   });
 
     startQrCountdown(data.expires_in_seconds);
     startQrPoll(data.token);
