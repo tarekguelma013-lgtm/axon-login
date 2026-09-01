@@ -356,20 +356,20 @@ function startQrPoll(token){
   clearInterval(qrPollTimer);
   qrPollTimer = setInterval(async ()=>{
     try{
-      const res = await fetch(fn('qr-login-manage'), {
+      const res = await fetch(fn('qr-login-status'), {
         method:'POST', headers: headers(),
-        body: JSON.stringify({ action:'poll', token })
+        body: JSON.stringify({ token })
       });
       const data = await res.json();
 
-      if(data.confirmed){
+      if(data.status === 'confirmed'){
         clearInterval(qrPollTimer);
         clearInterval(qrCountdownTimer);
         showMsg('msgQr','تم تأكيد الدخول ✅','ok');
         goToDashboard(data.user_id);
         return;
       }
-      if(data.expired){
+      if(data.status === 'expired'){
         clearInterval(qrPollTimer);
         showMsg('msgQr','انتهت صلاحية الرمز، ولّد رمزًا جديدًا.','err');
       }
