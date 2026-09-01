@@ -3,99 +3,249 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تأكيد الدخول - AXON</title>
+<title>AXON – تأكيد الدخول</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    background:#12141a; color:#eee; font-family:'Segoe UI', Tahoma, sans-serif; padding:20px; box-sizing:border-box;
+  :root{
+    --ink:#14171c; --ink-2:#1b1f26; --ink-3:#232833;
+    --brass:#b08d57; --brass-bright:#d4ac6e;
+    --paper:#ece7dc; --slate:#7d8493;
+    --ok:#5c9179; --err:#b0654f; --radius:14px;
   }
-  .card {
-    background:#1a1d26; border-radius:16px; padding:32px 24px; max-width:420px; width:100%;
-    text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: radial-gradient(1200px 800px at 50% -10%, #1e2430 0%, var(--ink) 55%), var(--ink);
+    color:var(--paper); font-family:'IBM Plex Sans Arabic', sans-serif;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px 16px; -webkit-font-smoothing:antialiased;
   }
-  .logo { font-size:2rem; font-weight:bold; margin-bottom:6px; }
-  .logo span { color:#d4a656; }
-  .sub { color:#999; margin-bottom:24px; font-size:0.95rem; }
-  .btn {
-    width:100%; padding:14px; border:none; border-radius:10px; font-size:1.05rem; font-weight:bold;
-    background:#d4a656; color:#1a1d26; cursor:pointer; margin-top:8px;
+  .wrap{ max-width:420px; width:100%; }
+  .brand{ text-align:center; margin-bottom:20px; }
+  .brand h1{ font-family:'Zilla Slab', serif; font-weight:700; font-size:2rem; }
+  .brand h1 span{ color:var(--brass-bright); }
+  .brand p{ color:var(--slate); font-size:0.85rem; margin-top:6px; }
+
+  .card{
+    background:var(--ink-2); border:1px solid var(--ink-3); border-radius:var(--radius);
+    padding:24px; box-shadow:0 12px 30px -18px rgba(0,0,0,.5);
   }
-  .btn:disabled { opacity:0.6; }
-  .msg { margin-top:16px; padding:12px; border-radius:8px; display:none; font-size:0.95rem; }
-  .msg.show { display:block; }
-  .msg.ok { background:rgba(80,200,120,0.15); color:#7ee0a0; }
-  .msg.err { background:rgba(220,80,80,0.15); color:#f0a0a0; }
-  .link { color:#d4a656; text-decoration:none; }
+  .step-title{ font-family:'Zilla Slab', serif; font-size:1.15rem; margin-bottom:4px; }
+  .step-sub{ font-size:0.82rem; color:var(--slate); margin-bottom:18px; }
+
+  .field{ margin-bottom:12px; }
+  .field label{ display:block; font-size:0.8rem; margin-bottom:6px; color:var(--slate); }
+  .field input{
+    width:100%; background:var(--ink); border:1px solid var(--ink-3); border-radius:9px;
+    padding:11px 12px; color:var(--paper); font-family:inherit; font-size:0.92rem;
+  }
+  .field input:focus{ outline:none; border-color:var(--brass); }
+
+  .btn{
+    width:100%; padding:12px; border-radius:9px; border:none; font-weight:600;
+    font-family:inherit; font-size:0.92rem; cursor:pointer; margin-top:6px;
+    background:linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#14171c;
+  }
+  .btn:disabled{ opacity:0.6; }
+  .btn:active{ transform:scale(.98); }
+
+  .msg{ margin-top:12px; font-size:0.8rem; padding:9px 11px; border-radius:8px; display:none; }
+  .msg.show{ display:block; }
+  .msg.ok{ background:rgba(92,145,121,.15); color:#9fd2b8; }
+  .msg.err{ background:rgba(176,101,79,.15); color:#e3a794; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .success{ text-align:center; }
+  .success .icon{ font-size:2.4rem; margin-bottom:10px; }
+
+  .account-line{ text-align:center; font-size:0.85rem; color:var(--slate); margin-bottom:16px; }
+  .account-line b{ color:var(--paper); }
+
+  .spinner{
+    width:22px; height:22px; border:3px solid var(--ink-3); border-top-color:var(--brass-bright);
+    border-radius:50%; margin:16px auto; animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">AX<span>ON</span></div>
-    <div class="sub" id="subText">تأكيد تسجيل الدخول من جهاز آخر</div>
 
-    <div id="notLoggedIn" style="display:none;">
-      <div class="msg show err">يجب تسجيل الدخول على هذا الجهاز أولًا لتتمكن من التأكيد.</div>
-      <a class="link" href="axon-portal.html">الذهاب لتسجيل الدخول</a>
-    </div>
-
-    <div id="confirmBox" style="display:none;">
-      <button class="btn" id="btnConfirm">تأكيد الدخول</button>
-    </div>
-
-    <div class="msg" id="msgResult"></div>
+<div class="wrap">
+  <div class="brand">
+    <h1>AX<span>ON</span></h1>
+    <p>تأكيد تسجيل الدخول</p>
   </div>
 
+  <div class="card">
+
+    <!-- تحميل أولي -->
+    <div class="panel active" id="panelChecking">
+      <div class="step-title">جاري التحقق من الرمز...</div>
+      <div class="step-sub">الرجاء الانتظار قليلاً.</div>
+      <div class="spinner"></div>
+    </div>
+
+    <!-- رمز غير صالح / منتهي -->
+    <div class="panel" id="panelInvalid">
+      <div class="step-title">تعذر التحقق من الرمز</div>
+      <div class="step-sub" id="invalidReason">الرمز غير صالح أو انتهت صلاحيته.</div>
+    </div>
+
+    <!-- تسجيل دخول سريع (لو الجهاز مش مسجل دخول) -->
+    <div class="panel" id="panelLogin">
+      <div class="step-title">سجّل الدخول لتأكيد العملية</div>
+      <div class="step-sub">أدخل بريدك وكلمة السر لتأكيد طلب الدخول من الجهاز الآخر.</div>
+
+      <div class="field">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="name@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>كلمة السر</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <button class="btn" id="btnLoginConfirm">تسجيل الدخول والتأكيد</button>
+      <div class="msg" id="msgLogin"></div>
+    </div>
+
+    <!-- تأكيد مباشر (لو الجهاز مسجل دخول أصلاً) -->
+    <div class="panel" id="panelConfirm">
+      <div class="step-title">تأكيد طلب الدخول</div>
+      <div class="account-line">سيتم تسجيل الدخول لحساب: <b id="confirmEmailLabel"></b></div>
+      <button class="btn" id="btnConfirmNow">تأكيد الدخول</button>
+      <div class="msg" id="msgConfirm"></div>
+    </div>
+
+    <!-- نجاح -->
+    <div class="panel success" id="panelSuccess">
+      <div class="icon">✓</div>
+      <div class="step-title">تم تأكيد الدخول</div>
+      <div class="step-sub">يمكنك الآن إغلاق هذه الصفحة، سيتم تسجيل الدخول تلقائيًا على الجهاز الآخر.</div>
+    </div>
+
+  </div>
+</div>
+
 <script>
-  const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
-  const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
-  const QR_MANAGE_SLUG = "super-action";
+const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
+const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
 
-  function headers(){
-    return {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${ANON_KEY}`,
-      "apikey": ANON_KEY
-    };
-  }
-  function showMsg(text, type){
-    const el = document.getElementById('msgResult');
-    el.textContent = text;
-    el.className = 'msg show ' + type;
-  }
+const REAL_SLUGS = {
+  "login-password": "rapid-responder",
+  "qr-login-confirm": "smooth-service",
+};
 
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get('token');
-  const userId = sessionStorage.getItem('axon_user_id');
-
-  if(!token){
-    showMsg('رابط غير صالح: لا يوجد رمز.', 'err');
-  } else if(!userId){
-    document.getElementById('notLoggedIn').style.display = 'block';
-  } else {
-    document.getElementById('confirmBox').style.display = 'block';
-  }
-
-  document.getElementById('btnConfirm')?.addEventListener('click', async ()=>{
-    const btn = document.getElementById('btnConfirm');
-    btn.disabled = true; btn.textContent = 'جاري التأكيد...';
-    try{
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/${QR_MANAGE_SLUG}`, {
-        method:'POST', headers: headers(),
-        body: JSON.stringify({ action:'confirm', token, user_id: userId })
-      });
-      const data = await res.json();
-      if(data.success){
-        showMsg('تم تأكيد الدخول بنجاح ✅ يمكنك إغلاق هذه الصفحة الآن.', 'ok');
-        btn.style.display = 'none';
-      } else {
-        showMsg(data.error || 'فشل التأكيد.', 'err');
-        btn.disabled = false; btn.textContent = 'تأكيد الدخول';
-      }
-    }catch(e){
-      showMsg('تعذر الاتصال بالسيرفر.', 'err');
-      btn.disabled = false; btn.textContent = 'تأكيد الدخول';
-    }
+function fn(name){
+  const slug = REAL_SLUGS[name] || name;
+  return `${SUPABASE_URL}/functions/v1/${slug}`;
+}
+function headers(){
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${ANON_KEY}`,
+    "apikey": ANON_KEY
+  };
+}
+function showMsg(id, text, type){
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.className = 'panel' + (p.id === id ? ' active' : '') + (p.id === 'panelSuccess' ? ' success' : '');
   });
+}
+
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token');
+
+let currentUserId = null;
+let currentUserEmail = null;
+
+async function init(){
+  if(!token){
+    document.getElementById('invalidReason').textContent = 'لم يتم العثور على رمز في الرابط.';
+    showPanel('panelInvalid');
+    return;
+  }
+
+  const storedUid = sessionStorage.getItem('axon_user_id');
+  const storedEmail = sessionStorage.getItem('axon_user_email');
+
+  if(storedUid){
+    currentUserId = storedUid;
+    currentUserEmail = storedEmail || '';
+    document.getElementById('confirmEmailLabel').textContent = currentUserEmail || '(الحساب الحالي)';
+    showPanel('panelConfirm');
+  }else{
+    showPanel('panelLogin');
+  }
+}
+
+async function doConfirm(userId){
+  try{
+    const res = await fetch(fn('qr-login-confirm'), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ token, confirming_user_id: userId })
+    });
+    const data = await res.json();
+
+    if(data.success){
+      showPanel('panelSuccess');
+      return;
+    }
+    showMsg('msgConfirm', data.error || 'تعذر تأكيد الرمز.', 'err');
+    showMsg('msgLogin', data.error || 'تعذر تأكيد الرمز.', 'err');
+  }catch(e){
+    showMsg('msgConfirm', 'تعذر الاتصال بالسيرفر.', 'err');
+    showMsg('msgLogin', 'تعذر الاتصال بالسيرفر.', 'err');
+  }
+}
+
+document.getElementById('btnConfirmNow').addEventListener('click', async ()=>{
+  const btn = document.getElementById('btnConfirmNow');
+  btn.disabled = true; btn.textContent = 'جاري التأكيد...';
+  await doConfirm(currentUserId);
+  btn.disabled = false; btn.textContent = 'تأكيد الدخول';
+});
+
+document.getElementById('btnLoginConfirm').addEventListener('click', async ()=>{
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if(!email || !password){
+    showMsg('msgLogin','أدخل البريد وكلمة السر أولًا.','err');
+    return;
+  }
+  const btn = document.getElementById('btnLoginConfirm');
+  btn.disabled = true; btn.textContent = 'جاري التحقق...';
+
+  try{
+    const res = await fetch(fn('login-password'), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if(data.success){
+      sessionStorage.setItem('axon_user_id', data.user_id);
+      sessionStorage.setItem('axon_user_email', email);
+      showMsg('msgLogin','تم تسجيل الدخول، جاري التأكيد...','ok');
+      await doConfirm(data.user_id);
+    }else{
+      showMsg('msgLogin', data.error || 'بيانات الدخول غير صحيحة.', 'err');
+    }
+  }catch(e){
+    showMsg('msgLogin','تعذر الاتصال بالسيرفر.','err');
+  }finally{
+    btn.disabled = false; btn.textContent = 'تسجيل الدخول والتأكيد';
+  }
+});
+
+init();
 </script>
 </body>
 </html>
