@@ -331,21 +331,26 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
 
     document.getElementById('qrBox').style.display = 'block';
     const qrHolder = document.getElementById('qrTokenDisplay');
-    qrHolder.innerHTML = '';
-
-    const confirmUrl = `https://tarekguelma013-lgtm.github.io/axon-login/axon-qr-confirm.html?token=${data.token}`;
-    new QRCode(qrHolder, {
-  text: confirmUrl,
-  width: 300,
-  height: 300,
-  colorDark: "#14171c",
-  colorLight: "#ffffff",
-  correctLevel: QRCode.CorrectLevel.L
-});
     
-    startQrCountdown(data.expires_in_seconds);
-    startQrPoll(data.token);
+qrHolder.innerHTML = '';
 
+const confirmUrl = `https://tarekguelma013-lgtm.github.io/axon-login/axon-qr-confirm.html?token=${data.token}`;
+
+qrHolder.innerHTML = `
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(confirmUrl)}"
+       width="260" height="260"
+       style="background:#fff; padding:10px; border-radius:8px; display:block; margin:0 auto;">
+  <div style="margin-top:14px; font-size:0.85rem; color:var(--slate);">
+    أو افتح الرابط مباشرة على الجهاز الآخر:
+  </div>
+  <a href="${confirmUrl}" target="_blank"
+     style="display:block; word-break:break-all; font-size:0.8rem; color:var(--brass-bright); margin-top:6px; text-decoration:underline;">
+    ${confirmUrl}
+  </a>
+`;
+
+startQrCountdown(data.expires_in_seconds);
+startQrPoll(data.token);
   }catch(e){
     showMsg('msgQr', `تعذر الاتصال بالسيرفر: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
