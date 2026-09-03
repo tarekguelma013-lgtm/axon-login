@@ -131,7 +131,7 @@ if(!userId){
 
 document.getElementById('userIdDisplay').textContent = userId;
 document.getElementById('avatarLetter').textContent = (userId || '?').charAt(0).toUpperCase();
-const REAL_SLUGS_CTX = { "get-user-context": "bright-handler" };
+const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint" };
 function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name] || name}`; }
 
 let currentOrgType = null;
