@@ -157,7 +157,55 @@ async function loadUserContext(){
     }
   }catch(e){ /* تجاهل */ }
 }
-loadUserContext();
+loadUserContext().then(()=>{
+  if(currentOrgType === 'company'){
+    document.getElementById('cardProtectedAccounts').style.display = 'block';
+    loadProtectedAccounts();
+  }
+});
+
+async function loadProtectedAccounts(){
+  const listEl = document.getElementById('protectedAccountsList');
+  listEl.innerHTML = '<div class="loading">جاري التحميل...</div>';
+
+  try{
+    const res = await fetch(fnCtx('protected-accounts-list'), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ requesting_user_id: userId })
+    });
+    const data = await res.json();
+
+    if(!data.success){
+      listEl.innerHTML = '';
+      document.getElementById('msgProtectedAccounts').textContent = data.error || 'تعذر جلب الحسابات.';
+      document.getElementById('msgProtectedAccounts').className = 'msg show err';
+      return;
+    }
+
+    if(!data.accounts || data.accounts.length === 0){
+      listEl.innerHTML = '<div class="empty">لا توجد حسابات محمية مسجلة حاليًا.</div>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    data.accounts.forEach(acc=>{
+      const row = document.createElement('div');
+      row.className = 'device-item';
+      row.innerHTML = `
+        <div class="device-info">
+          <div class="name">${acc.full_name}</div>
+          <div class="meta">${acc.email || acc.phone || 'لا توجد بيانات تواصل'}</div>
+        </div>
+      `;
+      listEl.appendChild(row);
+    });
+
+  }catch(e){
+    listEl.innerHTML = '';
+    document.getElementById('msgProtectedAccounts').textContent = 'تعذر الاتصال بالسيرفر.';
+    document.getElementById('msgProtectedAccounts').className = 'msg show err';
+  }
+}
 function showMsg(text, type){
   const el = document.getElementById('msgDevices');
   el.textContent = text;
