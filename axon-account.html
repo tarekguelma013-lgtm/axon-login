@@ -180,7 +180,50 @@ loadUserContext().then(()=>{
     loadProtectedAccounts();
   }
 });
+document.getElementById('btnAddAccount').addEventListener('click', async ()=>{
+  const full_name = document.getElementById('newAccName').value.trim();
+  const email = document.getElementById('newAccEmail').value.trim();
+  const phone = document.getElementById('newAccPhone').value.trim();
 
+  if(!full_name){
+    document.getElementById('msgProtectedAccounts').textContent = 'الاسم الكامل مطلوب.';
+    document.getElementById('msgProtectedAccounts').className = 'msg show err';
+    return;
+  }
+
+  const btn = document.getElementById('btnAddAccount');
+  btn.disabled = true; btn.textContent = 'جاري الإضافة...';
+
+  try{
+    const res = await fetch(fnCtx('protected-account-create'), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({
+        requesting_user_id: userId,
+        full_name,
+        email: email || null,
+        phone: phone || null
+      })
+    });
+    const data = await res.json();
+
+    if(data.success){
+      document.getElementById('newAccName').value = '';
+      document.getElementById('newAccEmail').value = '';
+      document.getElementById('newAccPhone').value = '';
+      document.getElementById('msgProtectedAccounts').textContent = 'تمت إضافة الحساب بنجاح.';
+      document.getElementById('msgProtectedAccounts').className = 'msg show ok';
+      loadProtectedAccounts();
+    }else{
+      document.getElementById('msgProtectedAccounts').textContent = data.error || 'تعذر إضافة الحساب.';
+      document.getElementById('msgProtectedAccounts').className = 'msg show err';
+    }
+  }catch(e){
+    document.getElementById('msgProtectedAccounts').textContent = 'تعذر الاتصال بالسيرفر.';
+    document.getElementById('msgProtectedAccounts').className = 'msg show err';
+  }finally{
+    btn.disabled = false; btn.textContent = '+ إضافة حساب محمي';
+  }
+});
 async function loadProtectedAccounts(){
   const listEl = document.getElementById('protectedAccountsList');
   listEl.innerHTML = '<div class="loading">جاري التحميل...</div>';
