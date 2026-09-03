@@ -93,7 +93,14 @@
     <button id="btnRegisterBiometric" class="btn" style="width:100%; padding:11px; border-radius:9px; border:none; font-weight:600; font-family:inherit; font-size:0.88rem; cursor:pointer; background:linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#14171c;">تسجيل بصمة على هذا الجهاز</button>
     <div class="msg" id="msgRegister"></div>
   </div>
-
+<div class="card" id="cardProtectedAccounts" style="display:none;">
+  <h2>الحسابات المحمية</h2>
+  <div class="sub">حسابات الزبائن التابعة لمؤسستك.</div>
+  <div id="protectedAccountsList">
+    <div class="loading">جاري التحميل...</div>
+  </div>
+  <div class="msg" id="msgProtectedAccounts"></div>
+</div>
   <div class="card">
     <h2>الأجهزة والبصمات المسجلة</h2>
     <div class="sub">الأجهزة المصرّح لها بالدخول ببصمتك.</div>
