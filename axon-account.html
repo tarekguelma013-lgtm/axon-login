@@ -131,7 +131,26 @@ if(!userId){
 
 document.getElementById('userIdDisplay').textContent = userId;
 document.getElementById('avatarLetter').textContent = (userId || '?').charAt(0).toUpperCase();
+const REAL_SLUGS_CTX = { "get-user-context": "bright-handler" };
+function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name] || name}`; }
 
+let currentOrgType = null;
+let currentOrgName = null;
+
+async function loadUserContext(){
+  try{
+    const res = await fetch(fnCtx('get-user-context'), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ user_id: userId })
+    });
+    const data = await res.json();
+    if(data.success && data.organization){
+      currentOrgType = data.organization.org_type;
+      currentOrgName = data.organization.name;
+    }
+  }catch(e){ /* تجاهل */ }
+}
+loadUserContext();
 function showMsg(text, type){
   const el = document.getElementById('msgDevices');
   el.textContent = text;
