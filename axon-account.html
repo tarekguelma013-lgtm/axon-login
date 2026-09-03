@@ -158,6 +158,7 @@ async function loadUserContext(){
   }catch(e){ /* تجاهل */ }
 }
 loadUserContext().then(()=>{
+  alert('org_type: ' + currentOrgType);
   if(currentOrgType === 'company'){
     document.getElementById('cardProtectedAccounts').style.display = 'block';
     loadProtectedAccounts();
