@@ -65,6 +65,28 @@
   .msg.show{ display:block; }
   .msg.ok{ background:rgba(92,145,121,.14); color:#9fd2b8; }
   .msg.err{ background:rgba(176,101,79,.14); color:#e3a794; }
+.bottom-bar{
+  position:fixed; bottom:0; left:0; right:0; z-index:150;
+  background:var(--ink-2); border-top:1px solid var(--ink-3);
+  display:flex; justify-content:space-around; padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+}
+.tab-btn{
+  background:none; border:none; color:var(--slate); cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-family:inherit; font-size:0.68rem; padding:4px 12px;
+}
+.tab-btn .icon{ font-size:1.3rem; }
+.tab-btn.active{ color:var(--brass-bright); }
+.tab-section{ display:none; }
+.tab-section.active{ display:block; }
+.wrap{ padding-bottom:70px; }
+.field{ margin-top:12px; }
+.field label{ font-size:0.78rem; color:var(--slate); display:block; margin-bottom:4px; }
+.field input, .field textarea{
+  width:100%; background:var(--ink); border:1px solid var(--ink-3); border-radius:8px;
+  padding:10px; color:var(--paper); font-family:inherit; font-size:0.85rem;
+}
+.field textarea{ min-height:80px; resize:vertical; }
 </style>
 </head>
 <body>
@@ -73,7 +95,43 @@
   <header>
     <div class="brand">AX<span>ON</span></div>
   </header>
+<div class="tab-section" id="tabHome">
+      <div class="card">
+        <h2>الرئيسية</h2>
+        <div class="sub">قريبًا: نظرة عامة على أعمال مؤسستك</div>
+        <div class="empty">لا يوجد محتوى بعد</div>
+      </div>
+    </div>
 
+    <div class="tab-section" id="tabSupport">
+      <div class="card">
+        <h2>الدعم الفني</h2>
+        <div class="sub">ابعث مشكلتك وراح توصل للدعم مباشرة</div>
+        <div class="field">
+          <label>الموضوع</label>
+          <input type="text" id="ticketSubject" placeholder="عنوان مختصر للمشكلة">
+        </div>
+        <div class="field">
+          <label>الرسالة</label>
+          <textarea id="ticketMessage" placeholder="اشرح مشكلتك بالتفصيل"></textarea>
+        </div>
+        <button class="btn" id="btnSendTicket" style="width:100%; margin-top:14px;">إرسال</button>
+        <div class="msg" id="msgTicket"></div>
+      </div>
+      <div class="card">
+        <h2 style="font-size:0.95rem;">تذاكرك السابقة</h2>
+        <div id="ticketsList"><div class="loading">جاري التحميل...</div></div>
+      </div>
+    </div>
+
+    <div class="tab-section" id="tabNotifications">
+      <div class="card">
+        <h2>الإشعارات</h2>
+        <div class="empty">لا توجد إشعارات بعد</div>
+      </div>
+    </div>
+
+    <div class="tab-section active" id="tabProfile">
   <div class="card">
     <h2>الملف الشخصي</h2>
     <div class="sub">معلومات حسابك في AXON</div>
