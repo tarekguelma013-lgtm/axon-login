@@ -189,7 +189,7 @@ async function loadUserContext(){
       const displayName = data.user.full_name || data.user.email || userId;
       document.getElementById('profileName').textContent = displayName;
       document.getElementById('profileOrg').textContent = currentOrgName || 'بدون مؤسسة';
-      document.getElementById('profileEmail').textContent = data.user.email || '—';
+      alert('org_type: ' + currentOrgType);
       document.getElementById('profilePhone').textContent = data.user.phone || 'غير مسجّل';
       document.getElementById('avatarLetter').textContent = (displayName || '?').charAt(0).toUpperCase();
     }
