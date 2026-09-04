@@ -181,9 +181,17 @@ async function loadUserContext(){
       body: JSON.stringify({ user_id: userId })
     });
     const data = await res.json();
-    if(data.success && data.organization){
-      currentOrgType = data.organization.org_type;
-      currentOrgName = data.organization.name;
+    if(data.success){
+      if(data.organization){
+        currentOrgType = data.organization.org_type;
+        currentOrgName = data.organization.name;
+      }
+      const displayName = data.user.full_name || data.user.email || userId;
+      document.getElementById('profileName').textContent = displayName;
+      document.getElementById('profileOrg').textContent = currentOrgName || 'بدون مؤسسة';
+      document.getElementById('profileEmail').textContent = data.user.email || '—';
+      document.getElementById('profilePhone').textContent = data.user.phone || 'غير مسجّل';
+      document.getElementById('avatarLetter').textContent = (displayName || '?').charAt(0).toUpperCase();
     }
   }catch(e){ /* تجاهل */ }
 }
