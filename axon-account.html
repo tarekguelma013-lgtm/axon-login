@@ -75,17 +75,30 @@
     <button class="logout" id="btnLogout">تسجيل الخروج</button>
   </header>
 
-  <div class="card">
-    <h2>ملف المستخدم</h2>
-    <div class="sub">معلومات حسابك في AXON</div>
-    <div class="profile-row">
-      <div class="avatar" id="avatarLetter">?</div>
-      <div class="profile-info">
-        <div class="uid" id="userIdDisplay">—</div>
-        <div class="role">مستخدم</div>
-      </div>
+ <div class="card">
+  <h2>الملف الشخصي</h2>
+  <div class="sub">معلومات حسابك في AXON</div>
+  <div class="profile-row">
+    <div class="avatar" id="avatarLetter">?</div>
+    <div class="profile-info">
+      <div class="uid" id="profileName">—</div>
+      <div class="role" id="profileOrg">—</div>
     </div>
   </div>
+
+  <div style="margin-top:14px; border-top:1px solid var(--ink-3); padding-top:14px;">
+    <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:0.85rem;">
+      <span style="color:var(--slate);">البريد الإلكتروني</span>
+      <span id="profileEmail">—</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:0.85rem;">
+      <span style="color:var(--slate);">رقم الهاتف</span>
+      <span id="profilePhone">غير مسجّل</span>
+    </div>
+  </div>
+
+  <button class="btn" id="btnLogoutProfile" style="width:100%; margin-top:16px; background:none; border:1px solid var(--err); color:var(--err);">تسجيل الخروج</button>
+</div> 
 
   <div class="card">
     <h2>إضافة بصمة جديدة</h2>
