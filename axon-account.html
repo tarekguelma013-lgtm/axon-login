@@ -167,8 +167,7 @@ if(!userId){
   window.location.href = "axon-portal.html";
 }
 
-document.getElementById('userIdDisplay').textContent = userId;
-document.getElementById('avatarLetter').textContent = (userId || '?').charAt(0).toUpperCase();
+document.getElementById('avatarLetter').textContent = '?';
 const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint", "protected-account-create": "smooth-api" };
 function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name] || name}`; }
 
