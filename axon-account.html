@@ -479,7 +479,7 @@ document.getElementById('btnRegisterBiometric').addEventListener('click', async 
         device_label: navigator.userAgent.slice(0, 60)
       })
     });
-    const verifyData = await verifyRes.json();
+    const verifyData = await verifyRes.json(); 
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
