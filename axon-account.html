@@ -364,8 +364,8 @@ async function deleteDevice(credentialId){
   }
 }
 
-document.getElementById('btnLogout').addEventListener('click', ()=>{
-  sessionStorage.removeItem('axon_user_id');
+
+document.getElementById('btnLogoutProfile').addEventListener('click', ()=>{  sessionStorage.removeItem('axon_user_id');
   window.location.href = "axon-portal.html";
 });
 
