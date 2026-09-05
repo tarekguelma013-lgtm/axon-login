@@ -409,7 +409,6 @@ function formatDate(iso){
   if(!iso) return "لم يُستخدم بعد";
   const d = new Date(iso);
   return d.toLocaleString('ar', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
-}
 async function loadDevices(){
   const listEl = document.getElementById('devicesList');
   listEl.innerHTML = '<div class="loading">جاري التحميل...</div>';
@@ -542,15 +541,13 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
     }
   }catch(e){
     showEmployeeMsg('تعذر الاتصال بالسيرفر.', 'err');
-  }
-});
-    data.devices.forEach(dev=>{
+  data.devices.forEach(dev=>{
       const row = document.createElement('div');
       row.className = 'device-item';
       row.innerHTML = `
         <div class="device-info">
           <div class="name">${(dev.device_label || 'جهاز غير معروف').slice(0,40)}</div>
-          <div class="meta">أُضيف: ${formatDate(dev.created_at)} · آخر استخدام: ${formatDate(dev.last_used_at)}</div>
+          <div class="meta">آخر استخدام: ${formatDate(dev.created_at)} · أضيف: ${formatDate(dev.last_used_at)}</div>
         </div>
         <button class="del-btn" data-id="${dev.id}">✕</button>
       `;
