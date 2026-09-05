@@ -434,6 +434,95 @@ async function loadDevices(){
     }
 
     listEl.innerHTML = '';
+    // ===== إدارة العمال =====
+const EMPLOYEES_FN = "employees-manage";
+
+function showEmployeeMsg(text, type){
+  const el = document.getElementById('msgEmployee');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+
+async function loadEmployees(){
+  const listEl = document.getElementById('employeesList');
+  try{
+    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ action:'list', organization_id: currentOrgId })
+    });
+    const data = await res.json();
+    if(!data.success || !data.employees || data.employees.length === 0){
+      listEl.innerHTML = '<div class="empty">لا يوجد عمال مسجلين حاليًا.</div>';
+      return;
+    }
+    listEl.innerHTML = '';
+    data.employees.forEach(emp=>{
+      const row = document.createElement('div');
+      row.className = 'employee-item';
+      row.innerHTML = `
+        <div>
+          <div class="e-name">${emp.full_name}</div>
+          <div class="e-meta">${emp.job_title || 'بدون منصب'} · ${emp.monthly_salary ? emp.monthly_salary + ' شهريًا' : 'بدون راتب مسجل'}</div>
+        </div>
+        <button class="del-btn" data-id="${emp.id}">✕</button>
+      `;
+      listEl.appendChild(row);
+    });
+    listEl.querySelectorAll('.del-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=> deleteEmployee(btn.dataset.id));
+    });
+  }catch(e){
+    listEl.innerHTML = '<div class="empty">تعذر تحميل قائمة العمال.</div>';
+  }
+}
+
+async function deleteEmployee(employeeId){
+  if(!confirm('هل تريد حذف هذا العامل؟')) return;
+  try{
+    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ action:'delete', employee_id: employeeId })
+    });
+    const data = await res.json();
+    if(data.success) loadEmployees();
+  }catch(e){}
+}
+
+document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
+  const full_name = document.getElementById('empName').value.trim();
+  const job_title = document.getElementById('empJob').value.trim();
+  const hire_date = document.getElementById('empHireDate').value;
+  const monthly_salary = document.getElementById('empSalary').value;
+
+  if(!full_name){
+    showEmployeeMsg('عمر اسم العامل على الأقل.', 'err');
+    return;
+  }
+
+  try{
+    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({
+        action:'create', organization_id: currentOrgId,
+        full_name, job_title, hire_date: hire_date || null,
+        monthly_salary: monthly_salary ? parseFloat(monthly_salary) : null
+      })
+    });
+    const data = await res.json();
+    if(data.success){
+      showEmployeeMsg('تمت إضافة العامل بنجاح.', 'ok');
+      document.getElementById('empName').value = '';
+      document.getElementById('empJob').value = '';
+      document.getElementById('empHireDate').value = '';
+      document.getElementById('empSalary').value = '';
+      loadEmployees();
+    } else {
+      showEmployeeMsg(data.error || 'تعذر إضافة العامل.', 'err');
+    }
+  }catch(e){
+    showEmployeeMsg('تعذر الاتصال بالسيرفر.', 'err');
+  }
+});
     data.devices.forEach(dev=>{
       const row = document.createElement('div');
       row.className = 'device-item';
