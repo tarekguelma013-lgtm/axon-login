@@ -276,7 +276,7 @@ if(!userId){
 }
 
 document.getElementById('avatarLetter').textContent = '?';
-const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint", "protected-account-create": "steady-worker" };
+const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint", "protected-account-create": "steady-worker", "employees-manage": "super-action" };
 function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name] || name}`; }
 
 let currentOrgType = null;
@@ -492,7 +492,7 @@ function showEmployeeMsg(text, type){
 async function loadEmployees(){
   const listEl = document.getElementById('employeesList');
   try{
-    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+    const res = await fetch(fnCtx(EMPLOYEES_FN), {
       method:'POST', headers: headers(),
       body: JSON.stringify({ action:'list', organization_id: currentOrgId })
     });
@@ -525,7 +525,7 @@ async function loadEmployees(){
 async function deleteEmployee(employeeId){
   if(!confirm('هل تريد حذف هذا العامل؟')) return;
   try{
-    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+    const res = await fetch(fnCtx(EMPLOYEES_FN), {
       method:'POST', headers: headers(),
       body: JSON.stringify({ action:'delete', employee_id: employeeId })
     });
@@ -546,7 +546,7 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
   }
 
   try{
-    const res = await fetch(fnUrl(EMPLOYEES_FN), {
+ const res = await fetch(fnCtx(EMPLOYEES_FN), {   
       method:'POST', headers: headers(),
       body: JSON.stringify({
         action:'create', organization_id: currentOrgId,
