@@ -291,7 +291,8 @@ async function loadUserContext(){
       if(data.organization){
         currentOrgType = data.organization.org_type;
         currentOrgName = data.organization.name;
-    currentOrgId = data.organization.id;  
+    currentOrgId = data.organization.id;
+      }
       const displayName = data.user.full_name || data.user.email || userId;
       document.getElementById('profileName').textContent = displayName;
       document.getElementById('profileOrg').textContent = currentOrgName || 'بدون مؤسسة';
