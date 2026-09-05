@@ -86,6 +86,12 @@
   width:100%; background:var(--ink); border:1px solid var(--ink-3); border-radius:8px;
   padding:10px; color:var(--paper); font-family:inherit; font-size:0.85rem;
 }
+.employee-item{
+  padding:12px 0; border-bottom:1px solid var(--ink-3);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.employee-item .e-name{ font-weight:600; font-size:0.88rem; }
+.employee-item .e-meta{ color:var(--slate); font-size:0.72rem; margin-top:3px; }  
 .field textarea{ min-height:80px; resize:vertical; }
 </style>
 </head>
@@ -98,12 +104,40 @@
       </header>
 
       <div class="tab-section" id="tabHome">
-        <div class="card">
-          <h2>الرئيسية</h2>
-          <div class="sub">قريبًا: نظرة عامة على أعمال مؤسستك</div>
-          <div class="empty">لا يوجد محتوى بعد</div>
-        </div>
-      </div>
+  <div class="card" id="cardAddEmployee" style="display:none;">
+    <h2>إضافة عامل جديد</h2>
+    <div class="field">
+      <label>الاسم الكامل</label>
+      <input type="text" id="empName" placeholder="اسم العامل">
+    </div>
+    <div class="field">
+      <label>المنصب / الوظيفة</label>
+      <input type="text" id="empJob" placeholder="مثال: محاسب">
+    </div>
+    <div class="field">
+      <label>تاريخ التوظيف</label>
+      <input type="date" id="empHireDate">
+    </div>
+    <div class="field">
+      <label>الراتب الشهري</label>
+      <input type="number" id="empSalary" placeholder="0">
+    </div>
+    <button class="btn" id="btnAddEmployee" style="width:100%; margin-top:14px;">+ إضافة عامل</button>
+    <div class="msg" id="msgEmployee"></div>
+  </div>
+
+  <div class="card" id="cardEmployeesList" style="display:none;">
+    <h2>قائمة العمال</h2>
+    <div class="sub">عمال مؤسستك المسجلين بالنظام</div>
+    <div id="employeesList"><div class="loading">جاري التحميل...</div></div>
+  </div>
+
+  <div class="card" id="cardHomeEmpty">
+    <h2>الرئيسية</h2>
+    <div class="sub">هذا القسم مخصص لمؤسسات الشركات فقط</div>
+    <div class="empty">لا يوجد محتوى متاح لنوع حسابك حاليًا</div>
+  </div>
+</div>
 
       <div class="tab-section" id="tabSupport">
         <div class="card">
@@ -245,7 +279,7 @@ function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name
 
 let currentOrgType = null;
 let currentOrgName = null;
-
+let currentOrgId = null;
 async function loadUserContext(){
   try{
     const res = await fetch(fnCtx('get-user-context'), {
@@ -257,20 +291,24 @@ async function loadUserContext(){
       if(data.organization){
         currentOrgType = data.organization.org_type;
         currentOrgName = data.organization.name;
-      }
+    currentOrgId = data.organization.id;  
       const displayName = data.user.full_name || data.user.email || userId;
       document.getElementById('profileName').textContent = displayName;
       document.getElementById('profileOrg').textContent = currentOrgName || 'بدون مؤسسة';
-      alert('org_type: ' + currentOrgType);
+      
       document.getElementById('profilePhone').textContent = data.user.phone || 'غير مسجّل';
       document.getElementById('avatarLetter').textContent = (displayName || '?').charAt(0).toUpperCase();
     }
   }catch(e){ /* تجاهل */ }
 }
 loadUserContext().then(()=>{
-  alert('org_type: ' + currentOrgType);
+  
   if(currentOrgType === 'company'){
     document.getElementById('cardProtectedAccounts').style.display = 'block';
+    document.getElementById('cardAddEmployee').style.display = '';
+document.getElementById('cardEmployeesList').style.display = '';
+document.getElementById('cardHomeEmpty').style.display = 'none';
+loadEmployees();
     loadProtectedAccounts();
   }
 });
