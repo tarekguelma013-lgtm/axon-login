@@ -92,37 +92,39 @@
 <body>
 
 <div class="wrap">
-  <header>
-  <div class="tab-section" id="tabHome">
-      <div class="card">
-        <h2>الرئيسية</h2>
-        <div class="sub">قريبًا: نظرة عامة على أعمال مؤسستك</div>
-        <div class="empty">لا يوجد محتوى بعد</div>
-      </div>
-    </div>
+  
+<header>
+        <div class="brand">AX<span>ON</span></div>
+      </header>
 
-    <div class="tab-section" id="tabSupport">
-      <div class="card">
-        <h2>الدعم الفني</h2>
-        <div class="sub">ابعث مشكلتك وراح توصل للدعم مباشرة</div>
-        <div class="field">
-          <label>الموضوع</label>
-          <input type="text" id="ticketSubject" placeholder="عنوان مختصر للمشكلة">
+      <div class="tab-section" id="tabHome">
+        <div class="card">
+          <h2>الرئيسية</h2>
+          <div class="sub">قريبًا: نظرة عامة على أعمال مؤسستك</div>
+          <div class="empty">لا يوجد محتوى بعد</div>
         </div>
-        <div class="field">
-          <label>الرسالة</label>
-          <textarea id="ticketMessage" placeholder="اشرح مشكلتك بالتفصيل"></textarea>
-        </div>
-        <button class="btn" id="btnSendTicket" style="width:100%; margin-top:14px;">إرسال</button>
-        <div class="msg" id="msgTicket"></div>
       </div>
-      <div class="card">
-        <h2 style="font-size:0.95rem;">تذاكرك السابقة</h2>
-        <div id="ticketsList"><div class="loading">جاري التحميل...</div></div>
-      </div>
-    </div>  <div class="brand">AX<span>ON</span></div>
-  </header>
 
+      <div class="tab-section" id="tabSupport">
+        <div class="card">
+          <h2>الدعم الفني</h2>
+          <div class="sub">ابعث مشكلتك وراح توصل للدعم مباشرة</div>
+          <div class="field">
+            <label>الموضوع</label>
+            <input type="text" id="ticketSubject" placeholder="عنوان مختصر للمشكلة">
+          </div>
+          <div class="field">
+            <label>الرسالة</label>
+            <textarea id="ticketMessage" placeholder="اشرح مشكلتك بالتفصيل"></textarea>
+          </div>
+          <button class="btn" id="btnSendTicket" style="width:100%; margin-top:14px;">إرسال</button>
+          <div class="msg" id="msgTicket"></div>
+        </div>
+        <div class="card">
+          <h2 style="font-size:0.95rem;">تذاكرك السابقة</h2>
+          <div id="ticketsList"><div class="loading">جاري التحميل...</div></div>
+        </div>
+      </div>
 
     <div class="tab-section" id="tabNotifications">
       <div class="card">
