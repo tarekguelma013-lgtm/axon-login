@@ -544,28 +544,6 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
   }
 });                   
   data.devices.forEach(dev=>{
-      const row = document.createElement('div');
-    
-      row.className = 'device-item';
-      row.innerHTML = `
-        <div class="device-info">
-          <div class="name">${(dev.device_label || 'جهاز غير معروف').slice(0,40)}</div>
-          <div class="meta">آخر استخدام: ${formatDate(dev.created_at)} · أضيف: ${formatDate(dev.last_used_at)}</div>
-        </div>
-        <button class="del-btn" data-id="${dev.id}">✕</button>
-      `;
-      listEl.appendChild(row);
-    });
-
-    listEl.querySelectorAll('.del-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=> deleteDevice(btn.dataset.id));
-    });
-
-  }catch(e){
-    listEl.innerHTML = '';
-    showMsg('تعذر الاتصال بالسيرفر.', 'err');
-  }
-;({
 
 async function deleteDevice(credentialId){
   if(!confirm('هل تريد حذف هذا الجهاز؟ لن تتمكن من الدخول به بالبصمة بعد الآن.')) return;
