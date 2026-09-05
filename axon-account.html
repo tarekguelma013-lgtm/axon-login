@@ -290,7 +290,6 @@ async function loadUserContext(){
       body: JSON.stringify({ user_id: userId })
     });
     const data = await res.json();
-    document.body.insertAdjacentHTML('afterbegin', `<div style="background:red;color:white;padding:10px;font-size:13px;word-break:break-all;">DEBUG: ${JSON.stringify(data)}</div>`);
     if(data.success){
       if(data.organization){
         currentOrgType = data.organization.org_type;
