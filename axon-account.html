@@ -251,11 +251,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
 <script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
-const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
+const ANON_KEY = "sb_publishable_0MXFCqGLOeqkteVozjLtDQ_VCmGeXhM";
 
 const MANAGE_DEVICES_FN = "super-api";
 const REGISTER_OPTIONS_FN = "hyper-worker";
 const REGISTER_VERIFY_FN = "quick-handler";
+const EMPLOYEES_FN = "employees-manage";
+const SUPPORT_CREATE_FN = "support-ticket-create";
 
 function fnUrl(name){ return `${SUPABASE_URL}/functions/v1/${name}`; }
 function headers(){
@@ -274,12 +276,13 @@ if(!userId){
 }
 
 document.getElementById('avatarLetter').textContent = '?';
-const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint", "protected-account-create": "smooth-api" };
+const REAL_SLUGS_CTX = { "get-user-context": "bright-handler", "protected-accounts-list": "smooth-endpoint", "protected-account-create": "steady-worker" };
 function fnCtx(name){ return `${SUPABASE_URL}/functions/v1/${REAL_SLUGS_CTX[name] || name}`; }
 
 let currentOrgType = null;
 let currentOrgName = null;
 let currentOrgId = null;
+
 async function loadUserContext(){
   try{
     const res = await fetch(fnCtx('get-user-context'), {
@@ -291,28 +294,28 @@ async function loadUserContext(){
       if(data.organization){
         currentOrgType = data.organization.org_type;
         currentOrgName = data.organization.name;
-    currentOrgId = data.organization.id;
+        currentOrgId = data.organization.id;
       }
       const displayName = data.user.full_name || data.user.email || userId;
       document.getElementById('profileName').textContent = displayName;
       document.getElementById('profileOrg').textContent = currentOrgName || 'بدون مؤسسة';
-      
       document.getElementById('profilePhone').textContent = data.user.phone || 'غير مسجّل';
       document.getElementById('avatarLetter').textContent = (displayName || '?').charAt(0).toUpperCase();
     }
   }catch(e){ /* تجاهل */ }
 }
+
 loadUserContext().then(()=>{
-  
   if(currentOrgType === 'company'){
     document.getElementById('cardProtectedAccounts').style.display = 'block';
     document.getElementById('cardAddEmployee').style.display = '';
-document.getElementById('cardEmployeesList').style.display = '';
-document.getElementById('cardHomeEmpty').style.display = 'none';
-loadEmployees();
+    document.getElementById('cardEmployeesList').style.display = '';
+    document.getElementById('cardHomeEmpty').style.display = 'none';
+    loadEmployees();
     loadProtectedAccounts();
   }
 });
+
 document.getElementById('btnAddAccount').addEventListener('click', async ()=>{
   const full_name = document.getElementById('newAccName').value.trim();
   const email = document.getElementById('newAccEmail').value.trim();
@@ -357,6 +360,7 @@ document.getElementById('btnAddAccount').addEventListener('click', async ()=>{
     btn.disabled = false; btn.textContent = '+ إضافة حساب محمي';
   }
 });
+
 async function loadProtectedAccounts(){
   const listEl = document.getElementById('protectedAccountsList');
   listEl.innerHTML = '<div class="loading">جاري التحميل...</div>';
@@ -399,6 +403,7 @@ async function loadProtectedAccounts(){
     document.getElementById('msgProtectedAccounts').className = 'msg show err';
   }
 }
+
 function showMsg(text, type){
   const el = document.getElementById('msgDevices');
   el.textContent = text;
@@ -406,9 +411,11 @@ function showMsg(text, type){
 }
 
 function formatDate(iso){
-  if(!iso) return "لم يُستخدم بعد";
+  if(!iso) return "لم يستخدم بعد";
   const d = new Date(iso);
   return d.toLocaleString('ar', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
 async function loadDevices(){
   const listEl = document.getElementById('devicesList');
   listEl.innerHTML = '<div class="loading">جاري التحميل...</div>';
@@ -454,9 +461,28 @@ async function loadDevices(){
   }
 }
 
-// ===== إدارة العمال =====
-const EMPLOYEES_FN = "employees-manage";
+async function deleteDevice(credentialId){
+  if(!confirm('هل تريد حذف هذا الجهاز؟ لن تتمكن من الدخول به بالبصمة بعد الآن.')) return;
 
+  try{
+    const res = await fetch(fnUrl(MANAGE_DEVICES_FN), {
+      method:'POST', headers: headers(),
+      body: JSON.stringify({ action:'delete', user_id: userId, credential_id: credentialId })
+    });
+    const data = await res.json();
+
+    if(data.success){
+      showMsg('تم حذف الجهاز بنجاح.', 'ok');
+      loadDevices();
+    } else {
+      showMsg(data.error || 'تعذر حذف الجهاز.', 'err');
+    }
+  }catch(e){
+    showMsg('تعذر الاتصال بالسيرفر.', 'err');
+  }
+}
+
+// ===== إدارة العمال =====
 function showEmployeeMsg(text, type){
   const el = document.getElementById('msgEmployee');
   el.textContent = text;
@@ -542,32 +568,73 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
   }catch(e){
     showEmployeeMsg('تعذر الاتصال بالسيرفر.', 'err');
   }
-});                   
-  data.devices.forEach(dev=>{
+});
 
-async function deleteDevice(credentialId){
-  if(!confirm('هل تريد حذف هذا الجهاز؟ لن تتمكن من الدخول به بالبصمة بعد الآن.')) return;
+// ===== الدعم الفني =====
+function showTicketMsg(text, type){
+  const el = document.getElementById('msgTicket');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+
+document.getElementById('btnSendTicket').addEventListener('click', async ()=>{
+  const subject = document.getElementById('ticketSubject').value.trim();
+  const message = document.getElementById('ticketMessage').value.trim();
+  if(!subject || !message){
+    showTicketMsg('عمر الموضوع والرسالة.', 'err');
+    return;
+  }
+  const btn = document.getElementById('btnSendTicket');
+  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
 
   try{
-    const res = await fetch(fnUrl(MANAGE_DEVICES_FN), {
+    const res = await fetch(fnUrl(SUPPORT_CREATE_FN), {
       method:'POST', headers: headers(),
-      body: JSON.stringify({ action:'delete', user_id: userId, credential_id: credentialId })
+      body: JSON.stringify({ user_id: userId, subject, message })
     });
     const data = await res.json();
-
     if(data.success){
-      showMsg('تم حذف الجهاز بنجاح.', 'ok');
-      loadDevices();
+      showTicketMsg('تم إرسال تذكرتك بنجاح، راح نرد عليك بالإيميل.', 'ok');
+      document.getElementById('ticketSubject').value = '';
+      document.getElementById('ticketMessage').value = '';
+      loadTickets();
     } else {
-      showMsg(data.error || 'تعذر حذف الجهاز.', 'err');
+      showTicketMsg(data.error || 'تعذر إرسال التذكرة.', 'err');
     }
   }catch(e){
-    showMsg('تعذر الاتصال بالسيرفر.', 'err');
+    showTicketMsg('تعذر الاتصال بالسيرفر.', 'err');
+  }finally{
+    btn.disabled = false; btn.textContent = 'إرسال';
+  }
+});
+
+async function loadTickets(){
+  const listEl = document.getElementById('ticketsList');
+  try{
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/support_tickets?user_id=eq.${userId}&order=created_at.desc`,
+      { headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` } }
+    );
+    const tickets = await res.json();
+    if(!tickets.length){
+      listEl.innerHTML = '<div class="empty">ماعندكش تذاكر سابقة.</div>';
+      return;
+    }
+    listEl.innerHTML = tickets.map(t => `
+      <div class="ticket-item">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="t-subject">${t.subject}</span>
+          <span class="t-status ${t.status === 'open' ? 'open' : 'closed'}">${t.status === 'open' ? 'مفتوحة' : 'مغلقة'}</span>
+        </div>
+      </div>
+    `).join('');
+  }catch(e){
+    listEl.innerHTML = '<div class="empty">تعذر تحميل التذاكر.</div>';
   }
 }
 
-
-document.getElementById('btnLogoutProfile').addEventListener('click', ()=>{  sessionStorage.removeItem('axon_user_id');
+document.getElementById('btnLogoutProfile').addEventListener('click', ()=>{
+  sessionStorage.removeItem('axon_user_id');
   window.location.href = "axon-portal.html";
 });
 
@@ -608,22 +675,26 @@ document.getElementById('btnRegisterBiometric').addEventListener('click', async 
         device_label: navigator.userAgent.slice(0, 60)
       })
     });
-    const verifyData = await verifyRes.json(); 
+    const verifyData = await verifyRes.json();
+
     if(verifyData.success){
       showRegisterMsg('تم تسجيل البصمة بنجاح على هذا الجهاز.', 'ok');
+      document.getElementById('cardRegisterBiometric').style.display = 'none';
       loadDevices();
     } else {
       showRegisterMsg(verifyData.error || 'فشل تسجيل البصمة.', 'err');
     }
   }catch(e){
-    showRegisterMsg(`تعذّر التسجيل: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
+    showRegisterMsg(`تعذر التسجيل: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
     btn.disabled = false; btn.textContent = 'تسجيل بصمة على هذا الجهاز';
   }
 });
-loadDevices();
 
- document.querySelectorAll('.tab-btn').forEach(btn=>{
+loadDevices();
+loadTickets();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
