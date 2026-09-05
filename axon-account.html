@@ -541,8 +541,11 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
     }
   }catch(e){
     showEmployeeMsg('تعذر الاتصال بالسيرفر.', 'err');
+  }
+});                   
   data.devices.forEach(dev=>{
       const row = document.createElement('div');
+    
       row.className = 'device-item';
       row.innerHTML = `
         <div class="device-info">
@@ -562,7 +565,7 @@ document.getElementById('btnAddEmployee').addEventListener('click', async ()=>{
     listEl.innerHTML = '';
     showMsg('تعذر الاتصال بالسيرفر.', 'err');
   }
-}
+;({
 
 async function deleteDevice(credentialId){
   if(!confirm('هل تريد حذف هذا الجهاز؟ لن تتمكن من الدخول به بالبصمة بعد الآن.')) return;
