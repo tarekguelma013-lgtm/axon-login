@@ -233,7 +233,15 @@
   </div>
 </div>
 </div>
-
+<div class="tab-section" id="tabMessages">
+  <div class="card">
+    <h2>البريد</h2>
+    <div class="sub">الرسائل الواردة من AXON أو من مؤسستك.</div>
+    <div id="messagesList">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+  </div>
+</div>
     <div class="bottom-bar">
       <button class="tab-btn" data-tab="tabHome">
         <span class="icon">🏠</span><span>الرئيسية</span>
@@ -696,7 +704,33 @@ document.getElementById('btnRegisterBiometric').addEventListener('click', async 
 
 loadDevices();
 loadTickets();
+if(!data.success || !data.messages || data.messages.length === 0){
+  listEl.innerHTML = '<div class="empty">لا توجد رسائل حاليًا.</div>';
+  return;
+}
 
+listEl.innerHTML = '';
+data.messages.forEach(msg=>{
+  const row = document.createElement('div');
+  row.className = 'device-item';
+  row.style.cursor = 'pointer';
+  row.innerHTML = `
+    <div class="device-info">
+      <div class="name">${msg.is_read ? '' : '🔵 '}${msg.subject}</div>
+      <div class="meta">${msg.sender_type === 'organization' ? 'من المؤسسة' : 'من AXON'} · ${formatMsgDate(msg.created_at)}</div>
+    </div>
+  `;
+  row.addEventListener('click', ()=>{
+    alert(msg.body);
+    if(!msg.is_read){
+      fetch(fnCtx(MESSAGES_FN), {
+        method:'POST', headers: headers(),
+        body: JSON.stringify({ action:'mark_read', message_id: msg.id })
+      }).then(()=> loadMessages());
+    }
+  });
+  listEl.appendChild(row);
+});
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
