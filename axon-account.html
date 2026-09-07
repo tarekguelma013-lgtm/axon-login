@@ -103,7 +103,8 @@
         <div class="brand">AX<span>ON</span></div>
       </header>
 
-      <div class="tab-section" id="tabHome">
+      
+<div class="tab-section" id="tabHome">
   <div class="card" id="cardAddEmployee" style="display:none;">
     <h2>إضافة عامل جديد</h2>
     <div class="field">
@@ -111,7 +112,7 @@
       <input type="text" id="empName" placeholder="اسم العامل">
     </div>
     <div class="field">
-      <label>المنصب / الوظيفة</label>
+      <label>الوظيفة / المنصب</label>
       <input type="text" id="empJob" placeholder="مثال: محاسب">
     </div>
     <div class="field">
@@ -132,42 +133,41 @@
     <div id="employeesList"><div class="loading">جاري التحميل...</div></div>
   </div>
 
+  <div class="card" id="cardProtectedAccounts" style="display:none;">
+    <h2>الحسابات المحمية</h2>
+    <div class="sub">حسابات الزبائن التابعة لمؤسستك.</div>
+    <div id="protectedAccountsList">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+    <div class="msg" id="msgProtectedAccounts"></div>
+
+    <div style="margin-top:16px; border-top:1px solid var(--ink-3); padding-top:16px;">
+      <div class="field">
+        <label>الاسم الكامل</label>
+        <input type="text" id="newAccName" placeholder="اسم الزبون">
+      </div>
+      <div class="field">
+        <label>البريد الإلكتروني (اختياري)</label>
+        <input type="email" id="newAccEmail" placeholder="name@example.com">
+      </div>
+      <div class="field">
+        <label>رقم الهاتف (اختياري)</label>
+        <input type="text" id="newAccPhone" placeholder="05xxxxxxxx">
+      </div>
+      <button class="btn" id="btnAddAccount" style="width:100%;">+ إضافة حساب محمي</button>
+    </div>
+  </div>
+
   <div class="card" id="cardHomeEmpty">
     <h2>الرئيسية</h2>
     <div class="sub">هذا القسم مخصص لمؤسسات الشركات فقط</div>
     <div class="empty">لا يوجد محتوى متاح لنوع حسابك حاليًا</div>
   </div>
 </div>
-
       <div class="tab-section" id="tabSupport">
         <div class="card">
           <h2>الدعم الفني</h2>
-          <div class="sub">ابعث مشكلتك وراح توصل للدعم مباشرة</div>
-          <div class="field">
-            <label>الموضوع</label>
-            <input type="text" id="ticketSubject" placeholder="عنوان مختصر للمشكلة">
-          </div>
-          <div class="field">
-            <label>الرسالة</label>
-            <textarea id="ticketMessage" placeholder="اشرح مشكلتك بالتفصيل"></textarea>
-          </div>
-          <button class="btn" id="btnSendTicket" style="width:100%; margin-top:14px;">إرسال</button>
-          <div class="msg" id="msgTicket"></div>
-        </div>
-        <div class="card">
-          <h2 style="font-size:0.95rem;">تذاكرك السابقة</h2>
-          <div id="ticketsList"><div class="loading">جاري التحميل...</div></div>
-        </div>
-      </div>
-
-    <div class="tab-section" id="tabNotifications">
-      <div class="card">
-        <h2>الإشعارات</h2>
-        <div class="empty">لا توجد إشعارات بعد</div>
-      </div>
-    </div>
-
-    <div class="tab-section active" id="tabProfile">
+         <div class="tab-section active" id="tabProfile">
   <div class="card">
     <h2>الملف الشخصي</h2>
     <div class="sub">معلومات حسابك في AXON</div>
@@ -189,8 +189,6 @@
         <span id="profilePhone">غير مسجل</span>
       </div>
     </div>
-
-  <button class="btn" id="btnLogoutProfile" style="width:100%; margin-top:16px; background:none;">تسجيل الخروج</button>  
   </div>
 
   <div class="card">
@@ -199,15 +197,18 @@
     <button id="btnRegisterBiometric" class="btn" style="width:100%; padding:11px; border-radius:8px;">تسجيل البصمة</button>
     <div class="msg" id="msgRegister"></div>
   </div>
-<div class="card" id="cardProtectedAccounts" style="display:none;">
-  <h2>الحسابات المحمية</h2>
-  <div class="sub">حسابات الزبائن التابعة لمؤسستك.</div>
-  <div id="protectedAccountsList">
-    <div class="loading">جاري التحميل...</div>
-  </div>
-  <div class="msg" id="msgProtectedAccounts"></div>
 
-  <div style="margin-top:16px; border-top:1px solid var(--ink-3); padding-top:16px;">
+  <div class="card">
+    <h2>الأجهزة والبصمات المسجلة</h2>
+    <div class="sub">الأجهزة المصرح لها بالدخول ببصمتك.</div>
+    <div id="devicesList">
+      <div class="loading">جاري التحميل...</div>
+    </div>
+    <div class="msg" id="msgDevices"></div>
+  </div>
+
+  <button class="btn" id="btnLogoutProfile" style="width:100%; margin-top:16px; background:none;">تسجيل الخروج</button>
+</div> 
     <div class="field">
       <label>الاسم الكامل</label>
       <input type="text" id="newAccName" placeholder="اسم الزبون">
