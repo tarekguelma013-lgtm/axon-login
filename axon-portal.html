@@ -76,24 +76,30 @@
 </style>
 </head>
 <body>
-
+<div style="text-align:center; padding:10px 0;">
+  <select id="langSelect" style="padding:6px 10px; border-radius:6px; background:#161b22; color:#e6edf3; border:1px solid #30363d;">
+    <option value="ar">🇩🇿 العربية</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="en">🇬🇧 English</option>
+  </select>
+</div>
 <div class="wrap">
   <div class="brand">
    <img src="axon-logo.png" alt="AXON" style="max-width:280px; width:100%; height:auto; margin-bottom:8px;"> 
-    <p>بوابة دخول جديدة ومستقلة</p>
+    <p data-i18n="portal_tagline">بوابة دخول جديدة ومستقلة</p>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="password">كلمة السر</div>
-    <div class="tab" data-tab="biometric">البصمة</div>
-    <div class="tab" data-tab="qr">رمز QR</div>
+    <div class="tab active" data-tab="password" data-i18n="tab_password">كلمة السر</div>
+    <div class="tab" data-tab="biometric" data-i18n="tab_biometric">البصمة</div>
+    <div class="tab" data-tab="qr" data-i18n="tab_qr">رمز QR</div>
   </div>
 
   <div class="card">
 
     <!-- تبويب: كلمة السر -->
     <div class="panel active" id="panelPassword">
-      <div class="step-title">تسجيل الدخول بكلمة السر</div>
+      <div class="step-title" data-i18n="password_title">تسجيل الدخول بكلمة السر</div>
       <div class="step-sub">أدخل بريدك وكلمة السر الخاصة بحسابك.</div>
 
       <div class="field">
@@ -105,7 +111,7 @@
         <input type="password" id="pwPassword" placeholder="••••••••" autocomplete="current-password">
       </div>
 
-      <button class="btn" id="btnPassword">دخول</button>
+      <button class="btn" id="btnPassword" data-i18n="login_button">دخول</button>
       <div class="msg" id="msgPassword"></div>
     </div>
 
@@ -156,6 +162,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="translations.js"></script>
 <script>
 const SUPABASE_URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
 const ANON_KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
