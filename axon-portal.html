@@ -124,28 +124,34 @@
         <input type="email" id="bioEmail" placeholder="name@example.com" autocomplete="email">
       </div>
 
-      <button class="btn" id="btnBiometric">التحقق بالبصمة الآن</button>
-      <button class="btn" id="btnBiometric" data-i18n="biometric_button">التحقق بالبصمة الآن</button>
-    </div>
+      <!-- تبويب: البصمة -->
+<div class="panel" id="panelBiometric">
+  <div class="step-title" data-i18n="biometric_title">تسجيل الدخول بالبصمة</div>
+  <div class="step-sub">أدخل بريدك، ثم أكد هويتك ببصمتك أو Face ID.</div>
+  <div class="field">
+    <label data-i18n="email_label">البريد الإلكتروني</label>
+    <input type="email" id="bioEmail" placeholder="name@example.com" autocomplete="email">
+  </div>
 
-    <!-- تبويب: QR -->
-    <div class="panel" id="panelQr">
-      <div class="step-title">الدخول عبر رمز QR</div>
-      <div class="step-title" data-i18n="qr_title">الدخول عبر رمز QR</div>
-      <div class="step-sub" data-i18n="qr_sub">أدخل بريدك لتوليد رمز الدخول.</div>
-        <label data-i18n="email_label">البريد الإلكتروني</label>
-        <input type="email" id="qrEmail" placeholder="name@example.com" autocomplete="email">
-      </div>
+  <button class="btn" id="btnBiometric" data-i18n="biometric_button">التحقق بالبصمة الآن</button>
+  <div class="msg" id="msgBiometric"></div>
+</div>
 
-      <button class="btn" id="btnQrGenerate">توليد رمز QR</button>
+<!-- تبويب: QR -->
+<div class="panel" id="panelQr">
+  <div class="step-title" data-i18n="qr_title">الدخول عبر رمز QR</div>
+  <div class="step-sub" data-i18n="qr_sub">أدخل بريدك لتوليد رمز الدخول.</div>
+  <div class="field">
+    <label data-i18n="email_label">البريد الإلكتروني</label>
+    <input type="email" id="qrEmail" placeholder="name@example.com" autocomplete="email">
+  </div>
 
-      <button class="btn" id="btnQrGenerate" data-i18n="qr_button">توليد رمز QR</button>
-        <div class="qr-token" id="qrTokenDisplay">—</div>
-        <div class="qr-timer" id="qrTimer">—</div>
-      </div>
+  <button class="btn" id="btnQrGenerate" data-i18n="qr_button">توليد رمز QR</button>
+  <div class="qr-token" id="qrTokenDisplay">—</div>
+  <div class="qr-timer" id="qrTimer">—</div>
 
-      <div class="msg" id="msgQr"></div>
-    </div>
+  <div class="msg" id="msgQr"></div>
+</div>
 
     <!-- نجاح -->
     <div class="panel success" id="panelSuccess">
