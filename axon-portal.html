@@ -398,7 +398,9 @@ function startQrCountdown(seconds){
     timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
   }, 1000);
 }
+  console.log('WORKING UP TO HERE');
   function applyLanguage(lang){
+  alert('applyLanguage called with: ' + lang);  
   const dict = translations[lang];
   document.documentElement.dir = dict.dir;
   document.documentElement.lang = lang;
