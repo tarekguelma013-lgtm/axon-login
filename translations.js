@@ -1,23 +1,50 @@
 const translations = {
   ar: {
-    login_title: "تسجيل الدخول",
+    portal_tagline: "بوابة دخول جديدة ومستقلة",
+    tab_password: "كلمة السر",
+    tab_biometric: "البصمة",
+    tab_qr: "رمز QR",
+    password_title: "تسجيل الدخول بكلمة السر",
     email_label: "البريد الإلكتروني",
     password_label: "كلمة السر",
     login_button: "دخول",
+    biometric_title: "تسجيل الدخول بالبصمة",
+    biometric_button: "التحقق بالبصمة الآن",
+    qr_title: "الدخول عبر رمز QR",
+    qr_sub: "أدخل بريدك لتوليد رمز الدخول.",
+    qr_button: "توليد رمز QR",
     dir: "rtl"
   },
   fr: {
-    login_title: "Connexion",
+    portal_tagline: "Portail de connexion nouveau et indépendant",
+    tab_password: "Mot de passe",
+    tab_biometric: "Biométrie",
+    tab_qr: "Code QR",
+    password_title: "Connexion par mot de passe",
     email_label: "E-mail",
     password_label: "Mot de passe",
     login_button: "Connexion",
+    biometric_title: "Connexion par biométrie",
+    biometric_button: "Vérifier maintenant",
+    qr_title: "Connexion via code QR",
+    qr_sub: "Entrez votre e-mail pour générer le code.",
+    qr_button: "Générer le code QR",
     dir: "ltr"
   },
   en: {
-    login_title: "Login",
+    portal_tagline: "A new, independent login portal",
+    tab_password: "Password",
+    tab_biometric: "Biometric",
+    tab_qr: "QR Code",
+    password_title: "Login with password",
     email_label: "Email",
     password_label: "Password",
     login_button: "Login",
+    biometric_title: "Login with biometric",
+    biometric_button: "Verify now",
+    qr_title: "Login via QR code",
+    qr_sub: "Enter your email to generate the code.",
+    qr_button: "Generate QR code",
     dir: "ltr"
   }
 };
