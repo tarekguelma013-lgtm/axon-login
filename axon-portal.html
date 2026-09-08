@@ -402,6 +402,7 @@ function startQrCountdown(seconds){
   function applyLanguage(lang){
   alert('applyLanguage called with: ' + lang);  
   const dict = translations[lang];
+   alert('dict is: ' + JSON.stringify(dict)); 
   document.documentElement.dir = dict.dir;
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
