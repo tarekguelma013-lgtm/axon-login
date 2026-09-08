@@ -85,7 +85,10 @@
 </div>
 <div class="wrap">
   <div class="brand">
-   <img src="axon-logo.png" alt="AXON" style="max-width:280px; width:100%; height:auto; margin-bottom:8px;"> 
+   <header>
+    <img src="axon-logo.png" alt="AXON" style="height:38px; width:auto;">
+    <button class="tab-btn notif-btn" data-tab="tabNotifications" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--paper);">🔔</button>
+</header>
     <p data-i18n="portal_tagline">بوابة دخول جديدة ومستقلة</p>
   </div>
 
@@ -247,7 +250,7 @@ if(data.suggest_next_method === 'biometric'){
 const attemptsMsg = (typeof data.attempts_left === 'number')
   ? ` (باقي ${data.attempts_left} محاولة)`
   : '';
-showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg + ' | DEBUG: ' + JSON.stringify(data), 'err');
+showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg, 'err');
   }catch(e){
     showMsg('msgPassword','تعذر الاتصال بالسيرفر.','err');
   }finally{
