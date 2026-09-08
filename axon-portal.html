@@ -400,18 +400,22 @@ function startQrCountdown(seconds){
 }
   console.log('WORKING UP TO HERE');
   function applyLanguage(lang){
-  alert('applyLanguage called with: ' + lang);  
-  const dict = translations[lang];
-   alert('dict is: ' + JSON.stringify(dict)); 
-  document.documentElement.dir = dict.dir;
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key = el.getAttribute('data-i18n');
-    if(dict[key]) el.textContent = dict[key];
-  });
-  localStorage.setItem('axon_lang', lang);
-}
-
+      try{
+        alert('step1: lang=' + lang + ' | translations exists=' + (typeof translations));
+        const dict = translations[lang];
+        alert('step2: dict=' + JSON.stringify(dict));
+        document.documentElement.dir = dict.dir;
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(el=>{
+          const key = el.getAttribute('data-i18n');
+          if(dict[key]) el.textContent = dict[key];
+        });
+        localStorage.setItem('axon_lang', lang);
+        alert('step3: done, applied ' + document.querySelectorAll('[data-i18n]').length + ' elements');
+      }catch(e){
+        alert('ERROR: ' + e.message);
+      }
+    }
 const savedLang = localStorage.getItem('axon_lang') || 'ar';
 document.getElementById('langSelect').value = savedLang;
 applyLanguage(savedLang);
