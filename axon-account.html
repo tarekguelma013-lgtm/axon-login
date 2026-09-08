@@ -100,8 +100,9 @@
 <div class="wrap">
   
 <header>
-        <div class="brand">AX<span>ON</span></div>
-      </header>
+    <div class="brand">AX<span>ON</span></div>
+    <button class="notif-btn" onclick="document.querySelector('[data-tab=\'tabNotifications\']')?.click() || (function(){document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));document.getElementById('tabNotifications').classList.add('active');})()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;">🔔</button>
+</header>
 
       
 <div class="tab-section" id="tabHome">
