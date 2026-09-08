@@ -584,35 +584,19 @@ function showTicketMsg(text, type){
   el.className = 'msg show ' + type;
 }
 
-document.getElementById('btnSendTicket').addEventListener('click', async ()=>{
+document.getElementById('btnSendTicket').addEventListener('click', ()=>{
   const subject = document.getElementById('ticketSubject').value.trim();
   const message = document.getElementById('ticketMessage').value.trim();
   if(!subject || !message){
     showTicketMsg('عمر الموضوع والرسالة.', 'err');
     return;
   }
-  const btn = document.getElementById('btnSendTicket');
-  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
-
-  try{
-    const res = await fetch(fnUrl(SUPPORT_CREATE_FN), {
-      method:'POST', headers: headers(),
-      body: JSON.stringify({ user_id: userId, subject, message })
-    });
-    const data = await res.json();
-    if(data.success){
-      showTicketMsg('تم إرسال تذكرتك بنجاح، راح نرد عليك بالإيميل.', 'ok');
-      document.getElementById('ticketSubject').value = '';
-      document.getElementById('ticketMessage').value = '';
-      loadTickets();
-    } else {
-      showTicketMsg(data.error || 'تعذر إرسال التذكرة.', 'err');
-    }
-  }catch(e){
-    showTicketMsg('تعذر الاتصال بالسيرفر.', 'err');
-  }finally{
-    btn.disabled = false; btn.textContent = 'إرسال';
-  }
+  const mailSubject = encodeURIComponent('AXON دعم: ' + subject);
+  const mailBody = encodeURIComponent(message);
+  window.location.href = `mailto:tarekguelma013@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+  showTicketMsg('تم فتح تطبيق البريد لإرسال التذكرة.', 'ok');
+  document.getElementById('ticketSubject').value = '';
+  document.getElementById('ticketMessage').value = '';
 });
 
 async function loadTickets(){
