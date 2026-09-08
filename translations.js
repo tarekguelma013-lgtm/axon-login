@@ -52,3 +52,4 @@ const translations = {
     qr_button: "Generate QR code",
     dir: "ltr"
   }
+};
