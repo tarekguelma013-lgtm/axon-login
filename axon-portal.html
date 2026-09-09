@@ -104,23 +104,25 @@
 }
 .axon-chat-panel.open{ display:flex; }
 .axon-chat-header{
-  background:linear-gradient(180deg, var(--brass-bright), var(--brass));
-  color:#14171c; padding:12px 16px; font-weight:700; font-family:'Zilla Slab',serif;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.axon-chat-header button{ background:none; border:none; font-size:1.1rem; cursor:pointer; color:#14171c; }
-.axon-chat-body{
+      background:linear-gradient(135deg, #0d2b52, #1a5fb4);
+      color:#fff; padding:12px 16px; font-weight:700; font-family:'Zilla Slab',serif;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .axon-chat-header button{ background:none; border:none; font-size:1.1rem; cursor:pointer; color:#fff; }
+    .axon-chat-body{
       padding:14px; overflow-y:auto; flex:1; font-size:0.85rem;
       display:flex; flex-direction:column; gap:10px;
       background:#eef1f5;
     }
     .axon-chat-msg{
-      background:#ffffff; border:1px solid #dfe3e8; border-radius:14px 14px 14px 4px;
-      padding:10px 14px; line-height:1.5; color:#1c1c1c;
+      background:linear-gradient(180deg, #0d2b52, #2a6fc9);
+      border:none; border-radius:14px 14px 14px 4px;
+      padding:10px 14px; line-height:1.5; color:#ffffff;
       max-width:80%; align-self:flex-start;
     }
     .axon-chat-msg.user{
-      background:#4a9eff; color:#fff; border:none;
+      background:linear-gradient(180deg, #1a5fb4, #4a9eff);
+      color:#fff; border:none;
       border-radius:14px 14px 4px 14px; align-self:flex-end;
     }
     .axon-chat-options{ display:flex; flex-direction:column; gap:8px; align-items:flex-end; width:100%; }
