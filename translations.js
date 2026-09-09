@@ -14,6 +14,7 @@ const translations = {
     qr_title: "الدخول عبر رمز QR",
     qr_sub: "أدخل بريدك لتوليد رمز الدخول.",
     qr_button: "توليد رمز QR",
+    attempts_left:"(باقي {n} محاولة",
     dir: "rtl"
   },
   fr: {
@@ -32,6 +33,7 @@ const translations = {
     qr_title: "Connexion via code QR",
     qr_sub: "Entrez votre e-mail pour générer le code.",
     qr_button: "Générer le code QR",
+    attempts_left:"({n}tentative(s) restante(s))",
     dir: "ltr"
   },
   en: {
@@ -50,6 +52,7 @@ const translations = {
     qr_title: "Login via QR code",
     qr_sub: "Enter your email to generate the code.",
     qr_button: "Generate QR code",
+    attempts_left:"({n}attempt(s) left)",
     dir: "ltr"
   }
 };
