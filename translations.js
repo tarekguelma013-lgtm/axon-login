@@ -14,6 +14,7 @@ const translations = {
     qr_title: "الدخول عبر رمز QR",
     qr_sub: "أدخل بريدك لتوليد رمز الدخول.",
     qr_button: "توليد رمز QR",
+    checking_label: "جاري التحقق...",
     attempts_left:"(باقي {n} محاولة",
     dir: "rtl"
   },
@@ -31,6 +32,7 @@ const translations = {
     biometric_sub: "Entrez votre e-mail, puis confirmez votre identité par empreinte ou Face ID.",
     biometric_button: "Vérifier maintenant",
     qr_title: "Connexion via code QR",
+    checking_label: "Vérification...",
     qr_sub: "Entrez votre e-mail pour générer le code.",
     qr_button: "Générer le code QR",
     attempts_left:"({n}tentative(s) restante(s))",
@@ -48,6 +50,7 @@ const translations = {
     login_button: "Login",
     biometric_title: "Login with biometric",
     biometric_sub: "Enter your email, then confirm your identity with fingerprint or Face ID.",
+    checking_label: "Checking...",
     biometric_button: "Verify now",
     qr_title: "Login via QR code",
     qr_sub: "Enter your email to generate the code.",
