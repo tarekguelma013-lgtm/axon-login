@@ -1,6 +1,6 @@
 const translations = {
   ar: {
-    portal_tagline: "بوابة دخول جديدة ومستقلة",
+    portal_tagline: "تسجيل الدخول",
     tab_password: "كلمة السر",
     tab_biometric: "البصمة",
     tab_qr: "رمز QR",
@@ -17,7 +17,7 @@ const translations = {
     dir: "rtl"
   },
   fr: {
-    portal_tagline: "Portail de connexion nouveau et indépendant",
+    portal_tagline: "connexion",
     tab_password: "Mot de passe",
     tab_biometric: "Biométrie",
     tab_qr: "Code QR",
@@ -35,7 +35,7 @@ const translations = {
     dir: "ltr"
   },
   en: {
-    portal_tagline: "A new, independent login portal",
+    portal_tagline: "login",
     tab_password: "Password",
     tab_biometric: "Biometric",
     tab_qr: "QR Code",
