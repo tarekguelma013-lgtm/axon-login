@@ -275,9 +275,10 @@ document.getElementById('btnPassword').addEventListener('click', async ()=>{
     return;
   }
   const btn = document.getElementById('btnPassword');
-  btn.disabled = true; btn.textContent = t('checking_label');
+btn.disabled = true; btn.textContent = 'جاري التحقق...';
 
-  try{
+try{
+  btn.textContent = t('checking_label');  
     const res = await fetch(fn('login-password'), {
       method:'POST', headers: headers(),
       body: JSON.stringify({ email, password })
