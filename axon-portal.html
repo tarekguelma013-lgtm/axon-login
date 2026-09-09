@@ -109,18 +109,27 @@
   display:flex; justify-content:space-between; align-items:center;
 }
 .axon-chat-header button{ background:none; border:none; font-size:1.1rem; cursor:pointer; color:#14171c; }
-.axon-chat-body{ padding:14px; overflow-y:auto; flex:1; font-size:0.85rem; }
-.axon-chat-msg{
-  background:var(--ink); border:1px solid var(--ink-3); border-radius:9px;
-  padding:10px 12px; margin-bottom:10px; line-height:1.5;
-}
-.axon-chat-options{ display:flex; flex-direction:column; gap:6px; }
-.axon-chat-opt{
-  background:none; border:1px solid var(--brass); color:var(--brass-bright);
-  border-radius:8px; padding:8px 10px; font-size:0.8rem; cursor:pointer;
-  font-family:inherit; text-align:right;
-}
-.axon-chat-opt:hover{ background:var(--brass); color:#14171c; }
+.axon-chat-body{
+      padding:14px; overflow-y:auto; flex:1; font-size:0.85rem;
+      display:flex; flex-direction:column; gap:10px;
+      background:#eef1f5;
+    }
+    .axon-chat-msg{
+      background:#ffffff; border:1px solid #dfe3e8; border-radius:14px 14px 14px 4px;
+      padding:10px 14px; line-height:1.5; color:#1c1c1c;
+      max-width:80%; align-self:flex-start;
+    }
+    .axon-chat-msg.user{
+      background:#4a9eff; color:#fff; border:none;
+      border-radius:14px 14px 4px 14px; align-self:flex-end;
+    }
+    .axon-chat-options{ display:flex; flex-direction:column; gap:8px; align-items:flex-end; width:100%; }
+    .axon-chat-opt{
+      background:#ffffff; border:1px solid #4a9eff; color:#1a5fb4;
+      border-radius:10px; padding:9px 14px; font-size:0.8rem; cursor:pointer;
+      font-family:inherit; text-align:right; max-width:85%;
+    }
+    .axon-chat-opt:hover{ background:#4a9eff; color:#fff; }
 </style>
 </head>
 <body>
@@ -569,22 +578,29 @@ function getChatLang(){
   return localStorage.getItem('axon_lang') || 'ar';
 }
 
-function renderAxonChat(nodeKey){
-  const lang = getChatLang();
-  const qa = AXON_QA_ALL[lang] || AXON_QA_ALL.ar;
-  const node = qa[nodeKey];
-  document.querySelector('.axon-chat-header span').textContent = qa.header;
-  const body = document.getElementById('axonChatBody');
-  body.innerHTML = `
-    <div class="axon-chat-msg">${node.msg}</div>
-    <div class="axon-chat-options">
-      ${node.options.map(o => `<button class="axon-chat-opt" data-next="${o.next}">${o.label}</button>`).join('')}
-    </div>
-  `;
-  body.querySelectorAll('.axon-chat-opt').forEach(btn=>{
-    btn.addEventListener('click', ()=> renderAxonChat(btn.dataset.next));
-  });
-}
+function renderAxonChat(nodeKey, userLabel){
+      const lang = getChatLang();
+      const qa = AXON_QA_ALL[lang] || AXON_QA_ALL.ar;
+      const node = qa[nodeKey];
+      document.querySelector('.axon-chat-header span').textContent = qa.header;
+      const body = document.getElementById('axonChatBody');
+      if(userLabel){
+        body.insertAdjacentHTML('beforeend', `<div class="axon-chat-msg user">${userLabel}</div>`);
+      }
+      body.insertAdjacentHTML('beforeend', `
+        <div class="axon-chat-msg">${node.msg}</div>
+        <div class="axon-chat-options">
+          ${node.options.map(o => `<button class="axon-chat-opt" data-next="${o.next}" data-label="${o.label}">${o.label}</button>`).join('')}
+        </div>
+      `);
+      body.querySelectorAll('.axon-chat-opt').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          body.querySelectorAll('.axon-chat-options').forEach(el=>el.remove());
+          renderAxonChat(btn.dataset.next, btn.dataset.label);
+        });
+      });
+      body.scrollTop = body.scrollHeight;
+    }
 document.getElementById('axonChatFab').addEventListener('click', ()=>{
   document.getElementById('axonChatPanel').classList.add('open');
   renderAxonChat('start');
