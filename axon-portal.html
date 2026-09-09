@@ -275,7 +275,7 @@ document.getElementById('btnPassword').addEventListener('click', async ()=>{
     return;
   }
   const btn = document.getElementById('btnPassword');
-  btn.disabled = true; btn.textContent = 'جاري التحقق...';
+  btn.disabled = true; btn.textContent = t('checking_label');
 
   try{
     const res = await fetch(fn('login-password'), {
@@ -309,9 +309,9 @@ const attemptsMsg = (typeof data.attempts_left === 'number')
   : '';
 showMsg('msgPassword', (data.error || t('err_wrong_password')) + attemptsMsg, 'err');
   }catch(e){
-    showMsg('msgPassword','تعذر الاتصال بالسيرفر.','err');
+    showMsg('msgPassword', t('err_server'), 'err');
   }finally{
-    btn.disabled = false; btn.textContent = 'دخول';
+    btn.disabled = false; btn.textContent = t('login_button');
   }
 });
 
