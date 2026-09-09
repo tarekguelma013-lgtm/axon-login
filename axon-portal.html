@@ -478,36 +478,102 @@ document.getElementById('langSelect').addEventListener('change', (e)=>{
   <div class="axon-chat-body" id="axonChatBody"></div>
 </div>
 <script>
-const AXON_QA = {
-  start: {
-    msg: "أهلاً! أنا مساعد AXON. شنو تحب تعرف؟",
-    options: [
-      { label: "شنو هو AXON؟", next: "about" },
-      { label: "كيفاش نسجل حساب؟", next: "register" },
-      { label: "واش البيانات محمية؟", next: "security" },
-      { label: "لمن موجه النظام؟", next: "target" }
-    ]
+const AXON_QA_ALL = {
+  ar: {
+    header: "مساعد AXON",
+    start: {
+      msg: "مرحبًا، أنا المساعد الذكي لنظام AXON. بماذا أستطيع مساعدتك؟",
+      options: [
+        { label: "ما هو نظام AXON؟", next: "about" },
+        { label: "كيف يتم تسجيل الحساب؟", next: "register" },
+        { label: "هل البيانات محمية؟", next: "security" },
+        { label: "لمن يوجَّه هذا النظام؟", next: "target" }
+      ]
+    },
+    about: {
+      msg: "AXON نظام متكامل لحماية البيانات، يساعد المؤسسات على أرشفة معلوماتها وترتيبها بشكل آمن، والحد من الأخطاء الإدارية والفساد.",
+      options: [ { label: "⬅ رجوع", next: "start" } ]
+    },
+    register: {
+      msg: "يتم تسجيل الحساب من قِبل المؤسسة مباشرة، بالتنسيق معنا، لضمان أعلى مستوى من الأمان لكل عميل.",
+      options: [ { label: "⬅ رجوع", next: "start" } ]
+    },
+    security: {
+      msg: "نعم، يعتمد النظام على تسجيل دخول متعدد الطرق (بصمة، كلمة سر، رمز QR)، مع تشفير كامل للبيانات وأرشيف محمي من أي تعديل غير مصرَّح به.",
+      options: [ { label: "⬅ رجوع", next: "start" } ]
+    },
+    target: {
+      msg: "نبدأ حاليًا بالمؤسسات الحكومية الصغيرة (البلديات، المؤسسات التربوية، المصالح الإدارية) لمساعدتها على التنظيم الرقمي.",
+      options: [ { label: "⬅ رجوع", next: "start" } ]
+    }
   },
-  about: {
-    msg: "AXON نظام أمان وحماية بيانات يساعد المؤسسات على أرشفة وترتيب معلوماتها بشكل آمن، وتقليل الأخطاء والفساد الإداري.",
-    options: [ { label: "⬅ رجوع", next: "start" } ]
+  fr: {
+    header: "Assistant AXON",
+    start: {
+      msg: "Bonjour, je suis l'assistant intelligent du système AXON. Comment puis-je vous aider ?",
+      options: [
+        { label: "Qu'est-ce qu'AXON ?", next: "about" },
+        { label: "Comment créer un compte ?", next: "register" },
+        { label: "Les données sont-elles protégées ?", next: "security" },
+        { label: "À qui s'adresse ce système ?", next: "target" }
+      ]
+    },
+    about: {
+      msg: "AXON est un système complet de protection des données, qui aide les organisations à archiver et organiser leurs informations en toute sécurité, tout en réduisant les erreurs administratives et la corruption.",
+      options: [ { label: "⬅ Retour", next: "start" } ]
+    },
+    register: {
+      msg: "La création de compte se fait directement par l'organisation, en coordination avec nous, afin de garantir le plus haut niveau de sécurité pour chaque client.",
+      options: [ { label: "⬅ Retour", next: "start" } ]
+    },
+    security: {
+      msg: "Oui, le système propose une connexion multi-facteurs (empreinte, mot de passe, code QR), avec un chiffrement complet des données et une archive protégée contre toute modification non autorisée.",
+      options: [ { label: "⬅ Retour", next: "start" } ]
+    },
+    target: {
+      msg: "Nous commençons actuellement avec les petites institutions publiques (communes, établissements éducatifs, services administratifs) pour les accompagner dans leur organisation numérique.",
+      options: [ { label: "⬅ Retour", next: "start" } ]
+    }
   },
-  register: {
-    msg: "تسجيل الحساب يتم من طرف المؤسسة مباشرة بعد التنسيق معنا، لضمان أعلى مستوى من الأمان لكل عميل.",
-    options: [ { label: "⬅ رجوع", next: "start" } ]
-  },
-  security: {
-    msg: "نعم، نستعمل تسجيل دخول بالبصمة/كلمة السر/QR، مع تشفير كامل للبيانات وأرشيف محمي من التعديل غير المصرح به.",
-    options: [ { label: "⬅ رجوع", next: "start" } ]
-  },
-  target: {
-    msg: "نبدأ حاليًا بالمؤسسات الحكومية الصغيرة (بلديات، مؤسسات تربوية، مصالح إدارية) لمساعدتها على التنظيم الرقمي.",
-    options: [ { label: "⬅ رجوع", next: "start" } ]
+  en: {
+    header: "AXON Assistant",
+    start: {
+      msg: "Hello, I'm the AXON smart assistant. How can I help you?",
+      options: [
+        { label: "What is AXON?", next: "about" },
+        { label: "How do I create an account?", next: "register" },
+        { label: "Is the data protected?", next: "security" },
+        { label: "Who is this system for?", next: "target" }
+      ]
+    },
+    about: {
+      msg: "AXON is a complete data protection system that helps organizations archive and organize their information securely, while reducing administrative errors and corruption.",
+      options: [ { label: "⬅ Back", next: "start" } ]
+    },
+    register: {
+      msg: "Account creation is handled directly by the organization, in coordination with us, to ensure the highest level of security for every client.",
+      options: [ { label: "⬅ Back", next: "start" } ]
+    },
+    security: {
+      msg: "Yes, the system supports multi-method login (fingerprint, password, QR code), with full data encryption and an archive protected against unauthorized changes.",
+      options: [ { label: "⬅ Back", next: "start" } ]
+    },
+    target: {
+      msg: "We are currently starting with small public institutions (municipalities, educational institutions, administrative services) to support their digital organization.",
+      options: [ { label: "⬅ Back", next: "start" } ]
+    }
   }
 };
 
+function getChatLang(){
+  return localStorage.getItem('axon_lang') || 'ar';
+}
+
 function renderAxonChat(nodeKey){
-  const node = AXON_QA[nodeKey];
+  const lang = getChatLang();
+  const qa = AXON_QA_ALL[lang] || AXON_QA_ALL.ar;
+  const node = qa[nodeKey];
+  document.querySelector('.axon-chat-header span').textContent = qa.header;
   const body = document.getElementById('axonChatBody');
   body.innerHTML = `
     <div class="axon-chat-msg">${node.msg}</div>
@@ -519,7 +585,6 @@ function renderAxonChat(nodeKey){
     btn.addEventListener('click', ()=> renderAxonChat(btn.dataset.next));
   });
 }
-
 document.getElementById('axonChatFab').addEventListener('click', ()=>{
   document.getElementById('axonChatPanel').classList.add('open');
   renderAxonChat('start');
