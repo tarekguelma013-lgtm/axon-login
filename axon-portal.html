@@ -271,7 +271,7 @@ document.getElementById('btnPassword').addEventListener('click', async ()=>{
   const email = document.getElementById('pwEmail').value.trim();
   const password = document.getElementById('pwPassword').value;
   if(!email || !password){
-    showMsg('msgPassword','أدخل البريد وكلمة السر أولًا.','err');
+    showMsg('msgPassword', t('err_missing_fields'), 'err');
     return;
   }
   const btn = document.getElementById('btnPassword');
@@ -305,9 +305,9 @@ if(data.suggest_next_method === 'biometric'){
 }
 
 const attemptsMsg = (typeof data.attempts_left === 'number')
-  ? ` (باقي ${data.attempts_left} محاولة)`
+? ` ${t('attempts_left').replace('{n}', data.attempts_left)}`   
   : '';
-showMsg('msgPassword', (data.error || 'كلمة السر غير صحيحة.') + attemptsMsg, 'err');
+showMsg('msgPassword', (data.error || t('err_wrong_password')) + attemptsMsg, 'err');
   }catch(e){
     showMsg('msgPassword','تعذر الاتصال بالسيرفر.','err');
   }finally{
