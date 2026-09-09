@@ -14,6 +14,7 @@ const translations = {
     qr_title: "الدخول عبر رمز QR",
     qr_sub: "أدخل بريدك لتوليد رمز الدخول.",
     qr_button: "توليد رمز QR",
+    err_server: "تعذر الاتصال بالسيرفر.",
     checking_label: "جاري التحقق...",
     attempts_left:"(باقي {n} محاولة",
     dir: "rtl"
@@ -31,6 +32,7 @@ const translations = {
     biometric_title: "Connexion par biométrie",
     biometric_sub: "Entrez votre e-mail, puis confirmez votre identité par empreinte ou Face ID.",
     biometric_button: "Vérifier maintenant",
+    err_server: "Impossible de contacter le serveur.",
     qr_title: "Connexion via code QR",
     checking_label: "Vérification...",
     qr_sub: "Entrez votre e-mail pour générer le code.",
@@ -48,6 +50,7 @@ const translations = {
     email_label: "Email",
     password_label: "Password",
     login_button: "Login",
+    err_server: "Unable to reach the server.",
     biometric_title: "Login with biometric",
     biometric_sub: "Enter your email, then confirm your identity with fingerprint or Face ID.",
     checking_label: "Checking...",
