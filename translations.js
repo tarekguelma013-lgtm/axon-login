@@ -24,6 +24,7 @@ err_biometric_start_failed: "تعذّر بدء عملية التحقق بالب�
     dir: "rtl"
     qr_expires_in: "تنتهي الصلاحية خلال {n} ثانية",
     qr_expired: "انتهت صلاحية الرمز",
+    qr_open_link: "أو افتح الرابط مباشرة على الجهاز الآخر:",
   },
   fr: {
     portal_tagline: "connexion",
@@ -50,6 +51,7 @@ err_biometric_start_failed: "Impossible de démarrer la vérification biométriq
     qr_expires_in: "Expire dans {n} secondes",
     qr_expired: "Code expiré", 
     attempts_left:"({n}tentative(s) restante(s))",
+    qr_open_link: "Ou ouvrez directement le lien sur l'autre appareil :",
     dir: "ltr"
   },
   en: {
@@ -73,7 +75,8 @@ err_biometric_start_failed: "Unable to start biometric verification.",
     qr_title: "Login via QR code",
     qr_sub: "Enter your email to generate the code.",
     qr_expires_in: "Expires in {n} seconds",
-    qr_expired: "Code expired",  
+    qr_expired: "Code expired",
+    qr_open_link: "Or open the link directly on the other device:",
     err_redirect_biometric: "Attempt limit reached, redirecting to biometric login...",
     qr_button: "Generate QR code",
     attempts_left:"({n}attempt(s) left)",
