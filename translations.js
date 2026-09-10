@@ -21,7 +21,7 @@ const translations = {
     err_biometric_failed: "فشل التحقق من البصمة.",
     err_biometric_start_failed: "تعذّر بدء عملية التحقق بالبصمة.",
     err_redirect_biometric: "تم تجاوز عدد المحاولات المسموح، جاري التحويل لتسجيل الدخول بالبصمة...",
-    dir: "rtl"
+    dir: "rtl",
     qr_expires_in: "تنتهي الصلاحية خلال {n} ثانية",
     qr_expired: "انتهت صلاحية الرمز",
     qr_open_link: "أو افتح الرابط مباشرة على الجهاز الآخر:",
