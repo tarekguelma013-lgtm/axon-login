@@ -448,16 +448,16 @@ function startQrCountdown(seconds){
   clearInterval(qrCountdownTimer);
   let remaining = seconds;
   const timerEl = document.getElementById('qrTimer');
-  timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+  timerEl.textContent = t('qr_expires_in').replace('{n}', remaining);
   qrCountdownTimer = setInterval(()=>{
     remaining--;
     if(remaining <= 0){
       clearInterval(qrCountdownTimer);
       clearInterval(qrPollTimer);
-      timerEl.textContent = 'انتهت صلاحية الرمز';
+      timerEl.textContent = t('qr_expired');
       return;
     }
-    timerEl.textContent = `تنتهي الصلاحية خلال ${remaining} ثانية`;
+    timerEl.textContent = t('qr_expires_in').replace('{n}', remaining);
   }, 1000);
 }
   function applyLanguage(lang){
