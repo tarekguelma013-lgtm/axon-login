@@ -311,7 +311,7 @@ if(data.suggest_next_method === 'biometric'){
 const attemptsMsg = (typeof data.attempts_left === 'number')
 ? ` ${t('attempts_left').replace('{n}', data.attempts_left)}`   
   : '';
-showMsg('msgPassword', (data.error || t('err_wrong_password')) + attemptsMsg, 'err');
+showMsg('msgPassword', t('err_wrong_password') + attemptsMsg, 'err');
   }catch(e){
     showMsg('msgPassword', t('err_server'), 'err');
   }finally{
