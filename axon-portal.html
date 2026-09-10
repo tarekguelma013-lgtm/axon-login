@@ -327,7 +327,7 @@ document.getElementById('btnBiometric').addEventListener('click', async ()=>{
     return;
   }
   const btn = document.getElementById('btnBiometric');
-  btn.disabled = true; btn.textContent = 'جاري التحقق...';
+  btn.disabled = true; btn.textContent = t('checking_label');
 
   try{
     if(!window.PublicKeyCredential){
@@ -362,7 +362,7 @@ document.getElementById('btnBiometric').addEventListener('click', async ()=>{
   }catch(e){
     showMsg('msgBiometric', `تعذّر بدء التحقق: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
-    btn.disabled = false; btn.textContent = 'التحقق بالبصمة الآن';
+    btn.disabled = false; btn.textContent = t('biometric_button');
   }
 });
 
@@ -377,7 +377,7 @@ document.getElementById('btnQrGenerate').addEventListener('click', async ()=>{
     return;
   }
   const btn = document.getElementById('btnQrGenerate');
-  btn.disabled = true; btn.textContent = 'جاري التوليد...';
+  btn.disabled = true; btn.textContent = t('generating_label');
 
   try{
     const res = await fetch(fn('login-qr-generate'), {
@@ -415,7 +415,7 @@ startQrPoll(data.token);
   }catch(e){
     showMsg('msgQr', `تعذر الاتصال بالسيرفر: ${e.name || ''} — ${e.message || 'غير معروف'}`, 'err');
   }finally{
-    btn.disabled = false; btn.textContent = 'توليد رمز QR';
+    btn.disabled = false; btn.textContent = t('qr_button');
   }
 });
 
