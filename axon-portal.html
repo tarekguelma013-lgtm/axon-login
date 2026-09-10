@@ -209,7 +209,11 @@
   <div class="step-title">تم التحقق من هويتك</div>
   <div class="step-sub">مرحبا بعودتك إلى AXON.</div>
 </div>
-    
+ <script>
+window.onerror = function(msg, url, line){
+  alert('خطأ: ' + msg + ' | سطر: ' + line);
+};
+</script>   
 <script src="https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@10/dist/bundle/index.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="translations.js?v=5"></script> 
