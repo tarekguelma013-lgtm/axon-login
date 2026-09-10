@@ -17,6 +17,7 @@ const translations = {
     err_server: "تعذر الاتصال بالسيرفر.",
     checking_label: "جاري التحقق...",
     attempts_left:"(باقي {n} محاولة",
+    err_redirect_biometric: "تم تجاوز عدد المحاولات المسموح، جاري التحويل لتسجيل الدخول بالبصمة...",
     dir: "rtl"
   },
   fr: {
@@ -37,6 +38,7 @@ const translations = {
     checking_label: "Vérification...",
     qr_sub: "Entrez votre e-mail pour générer le code.",
     qr_button: "Générer le code QR",
+    err_redirect_biometric: "Nombre de tentatives dépassé, redirection vers la connexion biométrique...",
     attempts_left:"({n}tentative(s) restante(s))",
     dir: "ltr"
   },
@@ -57,6 +59,7 @@ const translations = {
     biometric_button: "Verify now",
     qr_title: "Login via QR code",
     qr_sub: "Enter your email to generate the code.",
+    err_redirect_biometric: "Attempt limit reached, redirecting to biometric login...",
     qr_button: "Generate QR code",
     attempts_left:"({n}attempt(s) left)",
     dir: "ltr"
