@@ -225,7 +225,10 @@ const REAL_SLUGS = {
   "qr-login-confirm": "smooth-service",
   "qr-login-status": "smooth-action",
 };
-
+ function t(key){
+  const lang = localStorage.getItem('axon_lang') || 'ar';
+  return (translations[lang] && translations[lang][key]) || key;
+}
 function fn(name){
   const slug = REAL_SLUGS[name] || name;
   return `${SUPABASE_URL}/functions/v1/${slug}`;
