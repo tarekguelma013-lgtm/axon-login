@@ -438,7 +438,7 @@ function startQrPoll(token){
       }
       if(data.status === 'expired'){
         clearInterval(qrPollTimer);
-        showMsg('msgQr','انتهت صلاحية الرمز، ولّد رمزًا جديدًا.','err');
+        showMsg('msgQr', t('qr_expired'), 'err'); 
       }
     }catch(e){ /* تجاهل أخطاء الفحص المؤقتة */ }
   }, 2500);
