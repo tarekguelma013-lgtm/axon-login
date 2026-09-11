@@ -26,6 +26,7 @@ const H={"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};
 fetch(SB_URL+"/rest/v1/sections?select=*",{headers:H})
   .then(r=>r.json())
   .then(d=>{
+  alert('الرد: ' + JSON.stringify(d));
     let html="<tr><th>القسم</th><th>الأستاذ</th><th>العدد</th></tr>";
     d.forEach(s=>html+=`<tr><td>${s.name}</td><td>${s.teacher_name}</td><td>${s.student_count}</td></tr>`);
     document.getElementById('sectionsTable').innerHTML=html;
