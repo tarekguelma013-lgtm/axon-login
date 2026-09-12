@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>AXON — المطعم</title>
+<style>
+body{margin:0;background:#0f1420;color:#e8ebf3;font-family:Tahoma,Arial,sans-serif;padding:24px 16px;}
+h1{text-align:center;font-size:1.4rem;}
+h2{font-size:1.05rem;margin:24px auto 10px;max-width:700px;color:#c9a15a;}
+table{width:100%;max-width:700px;margin:0 auto;border-collapse:collapse;}
+th,td{padding:8px;border-bottom:1px solid #232c42;text-align:right;}
+th{color:#8a93a8;}
+</style>
+</head>
+<body>
+<h1>AXON — المطعم</h1>
+
+<h2>المخزون المتحرك</h2>
+<table id="stockTable"><tbody><tr><td>جاري التحميل...</td></tr></tbody></table>
+
+<h2>الجرد الثابت</h2>
+<table id="assetsTable"><tbody><tr><td>جاري التحميل...</td></tr></tbody></table>
+
+<h2>أرشيف الفواتير</h2>
+<table id="docsTable"><tbody><tr><td>جاري التحميل...</td></tr></tbody></table>
+
+<script>
+var URL = "https://tmizzjieyeqbcxuxoucw.supabase.co";
+var KEY = "sb_publishable_0MXFCqGL0eqkteVozjLtDQ_VCmGeXhM";
+var H = { "apikey": KEY, "Authorization": "Bearer " + KEY };
+
+fetch(URL + "/rest/v1/resource_stock?category=eq.مطعم&select=*", { headers: H })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    var html = "<tr><th>المادة</th><th>الكمية</th><th>الوحدة</th><th>الدورية</th></tr>";
+    d.forEach(function(r){
+      html += "<tr><td>" + r.item_name + "</td><td>" + r.quantity + "</td><td>" + r.unit + "</td><td>" + r.frequency + "</td></tr>";
+    });
+    document.getElementById('stockTable').innerHTML = html;
+  });
+
+fetch(URL + "/rest/v1/assets?category=eq.مطعم&select=*", { headers: H })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    var html = "<tr><th>العنصر</th><th>العدد</th></tr>";
+    d.forEach(function(a){
+      html += "<tr><td>" + a.item_name + "</td><td>" + a.quantity + "</td></tr>";
+    });
+    document.getElementById('assetsTable').innerHTML = html;
+  });
+
+fetch(URL + "/rest/v1/documents?category=eq.مطعم&select=*", { headers: H })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    var html = "<tr><th>النوع</th><th>المرجع</th><th>المبلغ</th><th>التاريخ</th></tr>";
+    d.forEach(function(doc){
+      html += "<tr><td>" + doc.doc_type + "</td><td>" + doc.reference_number + "</td><td>" + doc.amount + "</td><td>" + doc.doc_date + "</td></tr>";
+    });
+    document.getElementById('docsTable').innerHTML = html;
+  });
+</script>
+</body>
+</html>
