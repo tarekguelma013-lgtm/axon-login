@@ -26,10 +26,14 @@
   }
   .items-header h2{font-size:1rem;margin:0;color:var(--gold);}
   .item-row{
-    display:grid;grid-template-columns:1fr 70px 70px 80px 34px;gap:6px;
-    align-items:center;margin-bottom:8px;
+    display:grid;grid-template-columns:1fr;gap:6px;
+    margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--ink-3);
   }
-  .item-row input{margin-bottom:0;padding:8px 6px;font-size:0.85rem;}
+  .item-row .item-name{margin-bottom:0;}
+  .item-row-bottom{
+    display:grid;grid-template-columns:1fr 1fr 1fr 34px;gap:6px;align-items:center;
+  }
+  .item-row-bottom input{margin-bottom:0;padding:8px 6px;font-size:0.85rem;}
   .item-row .line-total{
     font-size:0.8rem;color:var(--green);text-align:center;
   }
@@ -111,11 +115,13 @@ function addItemRow(){
   row.className = 'item-row';
   row.dataset.rowId = itemRowCount;
   row.innerHTML = `
-    <input type="text" class="item-name" placeholder="مثال: بطاطا">
-    <input type="number" class="item-weight" placeholder="0" step="any">
-    <input type="number" class="item-price" placeholder="0" step="any">
-    <div class="line-total">0</div>
-    <button class="remove-btn" type="button">✕</button>
+    <input type="text" class="item-name" placeholder="اسم المادة (مثال: بطاطا)">
+        <div class="item-row-bottom">
+          <input type="number" class="item-weight" placeholder="الوزن/الكمية" step="any">
+          <input type="number" class="item-price" placeholder="سعر الوحدة" step="any">
+          <div class="line-total">0</div>
+          <button class="remove-btn" type="button">✕</button>
+        </div>
   `;
   container.appendChild(row);
 
